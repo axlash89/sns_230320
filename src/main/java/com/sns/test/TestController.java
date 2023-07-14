@@ -22,6 +22,11 @@ public class TestController {
 		return "Hello world!";
 	}
 	
+	@RequestMapping("/test4")
+	public String test4() {
+		return "test/test4";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/test2")
 	public List<Map<String, Object>> test2() {

@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+#wrap {
+	width: 750px;
+	height: auto;
+}
+
+.contents {
+    min-height: 500px; 
+}
+
+header {
+	height: 80px;
+	background-color: lightgrey;
+}
+
+#loginBox {
+	width: 450px;
+	height: 330px;
+	background-color: whitesmoke;
+}
