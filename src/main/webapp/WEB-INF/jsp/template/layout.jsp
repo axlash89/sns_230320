@@ -26,7 +26,7 @@
 		</header>
 		
 		<section class="contents">
-			<jsp:include page="../${view}.jsp"/>			
+			<jsp:include page="../${view}.jsp"/>	
 		</section>
 		
 	</div>

@@ -2,9 +2,10 @@
     pageEncoding="UTF-8"%>
 <div>&nbsp;</div>
 <div>&nbsp;</div>
+
 <div id="signUpBox" class="d-flex justify-content-center align-items-center">
 
-	<form method="post" action="">
+	<form id="signUpForm" method="post" action="/user/sign_up">
 
 		<table class="table table-borderless">
 			<tr>
@@ -44,7 +45,7 @@
 		</table>
 		
 		<div class="d-flex justify-content-center">
-			<input type="submit" class="btn btn-primary col-4" value="회원가입">
+			<input type="submit" class="btn btn-primary col-4" id="submitBtn" value="회원가입">
 		</div>
 		
 	</form>
@@ -90,5 +91,57 @@
 			});
 			
 		});
+		
+		$('#signUpForm').on('submit', function(e) {
+			e.preventDefault();
+			
+			let loginId = $('#loginId').val().trim();
+			let password = $('input[name = password]').val();
+			let passwordCheck = $('#passwordCheck').val();
+			let name = $('input[name = name]').val().trim();
+			let email = $('input[name = email]').val().trim();
+			
+			if (!loginId) {
+				alert("아이디를 입력하세요");
+ 				return false;
+			}
+			if (!password || !passwordCheck) {
+				alert("비밀번호를 입력하세요");
+				return false;
+			}
+			if (password != passwordCheck) {
+				alert("비밀번호가 일치하지 않습니다");
+				return false;
+			}
+			if (!name) {
+				alert("이름을 입력하세요");
+				return false;
+			}
+			if (!email) {
+				alert("이메일을 입력하세요");
+				return false;
+			}
+			
+			if ($('#msgUsableId').hasClass('d-none')) {
+				alert('아이디를 확인하세요.');
+				return false;
+			}
+			
+			
+			let url = $(this).attr('action');
+			let params = $(this).serialize();
+			
+			$.post(url, params)
+			.done(function(data){
+				if (data.code == 1) {
+					alert("회원가입을 환영합니다. 로그인을 해주세요.");
+					location.href="/user/sign_in_view"
+				} else {
+					alert(data.errorMessage);
+				}				
+			});
+			
+		});
+		
 	});
 </script>
