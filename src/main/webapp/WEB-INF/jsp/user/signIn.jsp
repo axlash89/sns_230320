@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div>&nbsp;</div>
 <div>&nbsp;</div>
 			
@@ -29,6 +30,7 @@
 $(document).ready(function() {
 	
 	$('#loginForm').on('submit', function(e) {
+		e.preventDefault();
 		
 		let loginId = $('#loginId').val().trim();
 		let password = $('#password').val();
@@ -48,7 +50,7 @@ $(document).ready(function() {
 		$.post(url, params)
 		.done(function(data) {
 			if (data.code == 1) {
-				location.href = "/post/post_list_view";
+				location.href = "/timeline/list_view";
 			} else {
 				alert(data.errorMessage);
 			}

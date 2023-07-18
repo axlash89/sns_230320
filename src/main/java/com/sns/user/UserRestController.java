@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,5 +91,40 @@ public class UserRestController {
 	
 	
 	// 로그인 API
+	@PostMapping("/sign_in")
+	public Map<String, Object> signIn(
+			@RequestParam("loginId") String loginId,
+			@RequestParam("password") String password,
+			HttpSession session) {
+		
+		SHA256 sha256 = new SHA256();
+		
+        String shaPassword = null;
+        
+		try {
+			shaPassword = sha256.encrypt(password);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		UserEntity userEntity = userBO.getUserEntityByLoginIdPassword(loginId, shaPassword);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if (userEntity != null) {
+			session.setAttribute("userId", userEntity.getId());
+			session.setAttribute("userLoginId", userEntity.getLoginId());
+			session.setAttribute("userName", userEntity.getName());
+			session.setAttribute("profileImagePath", userEntity.getProfileImagePath());
+			result.put("code", 1);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("errorMessage", "아이디 또는 비밀번호를 확인하세요.");
+		}
+		
+		return result;
+		
+	}
 	
 }

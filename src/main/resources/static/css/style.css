@@ -19,3 +19,11 @@ header {
 	height: 330px;
 	background-color: whitesmoke;
 }
+
+#content {
+	border: none;
+}
+
+#comment {
+	border: none;
+}
