@@ -50,7 +50,7 @@ $(document).ready(function() {
 		$.post(url, params)
 		.done(function(data) {
 			if (data.code == 1) {
-				location.href = "/timeline/list_view";
+				location.href = "/timeline/timeline_view";
 			} else {
 				alert(data.errorMessage);
 			}
