@@ -19,20 +19,25 @@
 		<c:forEach items="${postList}" var="post">
 			<div class="card border rounded mt-5">
 				<div class="border d-flex justify-content-between align-items-center">
-					<div class="font-weight-bold ml-3">${userLoginId}</div>
+					<div class="font-weight-bold ml-3">${post.userId}</div>
 					<a href="#" class="more-btn"><div class="mr-2"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="25px" alt="더보기"></div></a>
 				</div>
 				<div class="card-img">
 					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
 				<div class="card-like mt-2">
-					<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="15px" class="ml-3"></a>
+					<a href="#" class="like-btn"><img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="15px" class="ml-3" alt="빈 하트"></a>
 					<%-- https://www.iconninja.com/files/527/809/128/heart-icon.png  채워진 하트 --%>
 					<span class="small">좋아요 11개</span>
 				</div>
 				<div class="card-post mt-2 px-3">
-					<span class="font-weight-bold">${userLoginId}</span>
+					<span class="font-weight-bold">${post.userId}</span>
 					<span>${post.content}</span>
+					
+					<fmt:parseDate value="${post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
+					<div>
+						<span class="small text-secondary"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm:ss"/></span>
+					</div>
 				</div>
 					
 				<div class="card-comment-desc font-weight-bold mt-3 ml-3">
