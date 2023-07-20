@@ -27,3 +27,8 @@ header {
 #comment {
 	border: none;
 }
+
+.logo-text, .logo-text:hover {
+	text-decoration: none;
+	color: black;
+}

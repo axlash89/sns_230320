@@ -12,8 +12,7 @@
 				<%-- 이미지에 마우스 올리면 마우스커서가 링크 커서가 변하도록 a 태그 사용 --%>
 				<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
 				<%-- 업로드 된 임시 파일 이름 저장되는 곳 --%>
-				<div class="ml-2 d-flex align-items-center" id="fileName"></div>
-				
+				<div class="ml-2 d-flex align-items-center" id="fileName"></div>				
 			</div>
 			<button type="button" id="writeBtn" class="btn btn-info mr-3">게시</button>
 		</div>
@@ -75,8 +74,28 @@ $(document).ready(function() {
 		$('#file').click();  // input file을 클릭한 것과 같은 효과
 	});
 	
+	function lessThanFiveMegaBytes(){
+		if(document.getElementById("file").value!=""){
+			let fileSize = document.getElementById("file").files[0].size;
+			let maxSize = 5 * 1024 * 1024;  // 5MB
+			
+			if(fileSize > maxSize){				
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	
 	// 사용자가 이미지를 선택하는 순간 유효성 확인 및 업로드 된 파일명 노출
-	$('#file').on('change', function(e) {
+	$('#file').on('change', function(e) {		
+		if(lessThanFiveMegaBytes() == false) {
+			alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다. ");
+			$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
+			$('#fileName').text('');
+			return;
+		}
+		
 		let fileName = e.target.files[0].name;  // git10.jpg
 		// console.log(fileName);
 		
@@ -89,9 +108,9 @@ $(document).ready(function() {
 			$('#fileName').text('');
 			return;
 		}
-		
-		// 유효성 통과한 이미지는 상자에 업로드 된 파일 이름 노출		
-		$('#fileName').text(fileName);		
+		// 유효성 통과한 이미지는 상자에 업로드 된 파일 이름 노출
+		$('#fileName').text(fileName);
+						
 	});
 	
 	$('#writeBtn').on('click', function() {
@@ -107,10 +126,7 @@ $(document).ready(function() {
 			alert("이미지를 업로드하세요.");
 			return;
 		}
-		
-						
-		// SNS에서 글쓰기는 jpa,, save로
-		
+				
 		let formData = new FormData();
 		formData.append("content", content);
 		formData.append("file", $('#file')[0].files[0]);

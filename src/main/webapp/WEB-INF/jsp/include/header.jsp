@@ -2,7 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <div class="d-flex justify-content-between align-items-center">
-	<div class="h2 font-weight-bold pl-5">Instagram</div>
+	<c:choose>
+		<c:when test="${not empty userName}">
+			<a href="/timeline/timeline_view" class="logo-text"><div class="h2 font-weight-bold pl-5">Photogram</div></a>
+		</c:when>
+		<c:otherwise>
+			<a href="/user/sign_in_view" class="logo-text"><div class="h2 font-weight-bold pl-5">Photogram</div></a>
+		</c:otherwise>
+	</c:choose>	
 	<div>
 		<c:choose>
 			<c:when test="${not empty userName}">
