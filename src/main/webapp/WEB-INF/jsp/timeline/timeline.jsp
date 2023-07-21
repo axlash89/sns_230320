@@ -49,15 +49,24 @@
 				</div>
 				
 				<div class="card-comment-list mt-2 px-3 border">
+				
+				<c:forEach items="${commentList}" var="comment">
+				<c:if test="${post.id eq comment.postId}">
 					<div class="card-comment my-1">
-						<span class="font-weight-bold">hagulu :</span>
-						<span>분류가 잘 되었군요~</span><a href="#" class="comment-del-btn"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-3" width="8px" alt="삭제 버튼 이미지"></a>
-					</div>
+						<span class="font-weight-bold">${comment.userId}</span>
+						<span>${comment.content}</span><a href="#" class="comment-del-btn"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-3" width="8px" alt="삭제 버튼 이미지"></a>
+					</div>					
+				</c:if>
+				</c:forEach>
 				</div>
 				
 				<div class="comment-write m-2 d-flex justify-content-between">
 					<input type="text" placeholder="댓글 내용을 입력하세요" class="comment-input w-100">
+					<input type="text" class="postIdValue d-none" value="${post.id}">
 					<button type="button" class="comment-btn btn btn-secondary">게시</button>
+					<!-- <button type="button" id="writeBtn" class="btn btn-info mr-3" data-post-id="${post.id}">게시</button> -->
+					<!-- data-post-id="${post.id} -->
+					<!-- let postId = $(this).data('post-id'); -->
 				</div>			
 			</div>
 		</c:forEach>
@@ -154,6 +163,45 @@ $(document).ready(function() {
 		
 		});
 		
+		
+	});
+	
+	$('.comment-btn').on('click', function() {
+		
+		let content = $(this).siblings('.comment-input').val().trim();		
+		let postId = $(this).siblings('.postIdValue').val();
+		
+		if (!content) {
+			alert("댓글 내용을 입력하세요");
+			return;
+		}
+		
+		let formData = new FormData();
+		formData.append("content", content);
+		formData.append("postId", postId);
+		
+		$.ajax({
+			type: "post"
+			, url: "/comment/create"
+			, data: formData
+			, processData: false
+			, contentType: false
+			
+			
+			, success: function(data) {
+				if (data.code == 1) {
+					alert("댓글 업로드 완료");
+					location.href="/timeline/timeline_view"
+				} else {
+					alert(data.errorMessage);
+				}
+			} 
+			
+			, error:function(request, status, error) {
+				alert("댓글 업로드 실패, 관리자에게 문의하세요.")
+			}
+		
+		});
 		
 	});
 	
