@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div>&nbsp;</div>
-<div>&nbsp;</div>
-
-<div id="signUpBox" class="d-flex justify-content-center align-items-center">
+    
+<div id="signUpBox" class="d-flex justify-content-center align-items-center mt-5">
 
 	<form id="signUpForm" method="post" action="/user/sign_up">
 
-		<table class="table table-borderless">
+		<table class="table">
 			<tr>
 				<th class="text-center pt-4">* 아이디</th>
 				<td>

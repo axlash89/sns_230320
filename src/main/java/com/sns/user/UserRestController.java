@@ -127,4 +127,60 @@ public class UserRestController {
 		
 	}
 	
+	@PostMapping("/change_password")
+	public Map<String, Object> changePassword(
+			@RequestParam("password") String password,
+			@RequestParam("newPassword")String newPassword,
+			HttpSession session) {
+		
+		SHA256 sha256 = new SHA256();
+		
+        String shaPassword = null;
+        
+		try {
+			shaPassword = sha256.encrypt(password);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		String loginId = (String)session.getAttribute("userLoginId");
+		
+		UserEntity userEntity = userBO.getUserEntityByLoginIdPassword(loginId, shaPassword);
+		
+
+		Map<String, Object> result = new HashMap<>();
+		
+		if (userEntity != null) {
+			
+			int userId = (int)session.getAttribute("userId");
+			
+			sha256 = new SHA256();
+			
+	        shaPassword = null;
+	        
+			try {
+				shaPassword = sha256.encrypt(newPassword);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+			
+			userEntity = userBO.updateUserEntityPasswordById(userId, shaPassword);
+			
+			if (userEntity != null) {
+				result.put("code", 1);
+				result.put("result", "성공");
+			} else {
+				result.put("code", 300);
+				result.put("errorMessage", "알 수 없는 오류로 인해 비밀번호 변경 실패, 관리자에게 문의하세요.");
+			}
+			
+		} else {
+			result.put("code", 500);
+			result.put("errorMessage", "기존 비밀번호가 일치하지 않습니다.");
+		}
+		
+		return result;
+		
+	}
+	
 }

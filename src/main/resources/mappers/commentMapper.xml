@@ -5,6 +5,7 @@
  <mapper namespace="com.sns.comment.dao.CommentMapper">
  	
  	<insert id="insertComment" parameterType="map">
+ 	
  		INSERT INTO `comment`
  		(
 			`postId`
@@ -21,6 +22,7 @@
  			,now()
  			,now()
  		)
+ 		
  	</insert>
  	
  	<select id="selectCommentList" resultType="com.sns.comment.domain.Comment">

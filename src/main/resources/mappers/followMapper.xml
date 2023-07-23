@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.sns.follow.dao.FollowMapper">
+ 	
+ 	<select id="selectFollowByCurrUserIdAndUserId" parameterType="map" resultType="com.sns.follow.domain.Follow">
+ 		
+ 		SELECT
+ 			`userId`
+			,`followId`
+			,`createdAt`
+ 		FROM
+ 			`follow`
+ 		WHERE
+ 			`userId` = #{currUserId} 
+ 			AND
+ 			`followId` = #{userId}
+ 		
+ 	</select>
+ 	
+ 	<insert id="insertFollow" parameterType="map">
+ 	
+ 		INSERT INTO `follow`
+ 		(
+			`userId`
+			,`followId`
+			,`createdAt`
+ 		)
+ 		VALUES
+ 		(
+ 			#{currUserId}
+ 			,#{followId}
+ 			,now()
+ 		)
+ 	
+ 	</insert>
+ 	
+ 	<delete id="deleteFollow" parameterType="map">
+ 		
+ 		DELETE FROM
+			`follow`
+		WHERE 
+			`userId` = #{currUserId}
+				AND
+			`followId` = #{unfollowId}
+ 		
+ 	</delete>
+ 	
+ 	<select id="selectFollowerList" parameterType="map" resultType="com.sns.follow.domain.Follow">
+ 		
+ 		SELECT
+ 			`userId`
+			,`followId`
+			,`createdAt`
+ 		FROM
+ 			`follow`
+ 		WHERE
+ 			`followId` = #{userId} 
+ 		
+ 	</select>
+ 	
+ 	<select id="selectFollowingList" parameterType="map" resultType="com.sns.follow.domain.Follow">
+ 		
+ 		SELECT
+ 			`userId`
+			,`followId`
+			,`createdAt`
+ 		FROM
+ 			`follow`
+ 		WHERE
+ 			`userId` = #{userId} 
+ 		
+ 	</select>
+ </mapper>

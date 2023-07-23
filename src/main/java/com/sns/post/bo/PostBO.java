@@ -40,5 +40,9 @@ public class PostBO {
 
 		return postEntity == null ? null : postEntity.getId();
 	}
+	
+//	public List<PostEntity> getMyPostList(int userId) {
+//		return postRepository.findAllByUserIdOrderByIdDesc(userId);
+//	}
 
 }

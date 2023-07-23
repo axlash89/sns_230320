@@ -16,6 +16,11 @@ public class UserBO {
 		return userRepository.findByLoginId(loginId);
 	}
 	
+	public UserEntity getUserEntityByUserId(int userId) {
+		return userRepository.findById(userId).orElse(null);
+	}
+	
+	
 	public Integer addUser(String loginId, String password, String name, String email) {
 		
 		UserEntity userEntity = userRepository.save(
@@ -33,6 +38,21 @@ public class UserBO {
 	
 	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
 		return userRepository.findByLoginIdAndPassword(loginId, password);
+	}
+	
+	public UserEntity updateUserEntityPasswordById(int userId, String password) {
+		
+		UserEntity userEntity = userRepository.findById(userId).orElse(null);
+		
+		if (userEntity != null) {
+			userEntity = userEntity.toBuilder()
+					.password(password)
+					.build();
+					userEntity = userRepository.save(userEntity);					
+		}
+		
+		return userEntity;
+		
 	}
 	
 }

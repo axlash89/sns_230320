@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div>&nbsp;</div>
-<div>&nbsp;</div>
 			
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center mt-5">
 	<div id="loginBox" class="border d-flex justify-content-center align-items-center">
 		<div>
 			<form method="post" action="/user/sign_in" id="loginForm" class="form-horizontal" role="form">
@@ -28,6 +26,8 @@
 <script>
 
 $(document).ready(function() {
+	
+	$('#loginText').addClass('d-none');
 	
 	$('#loginForm').on('submit', function(e) {
 		e.preventDefault();

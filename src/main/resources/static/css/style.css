@@ -11,17 +11,33 @@
 
 header {
 	height: 80px;
-	background-color: lightgrey;
+	background-color:#E0F8F7;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
 #loginBox {
-	width: 450px;
-	height: 330px;
-	background-color: whitesmoke;
+	width: 400px;
+	height: 310px;
+	background-color:#EFFBFB;
+	border-color: #E6E6E6;
+	border-radius: 15px;
+	overflow: hidden;
+}
+
+#signUpForm {
+	width: 500px;
+	height: 340px;
+	background-color:#EFFBFB;
+	border-color: #E6E6E6;
+	border-radius: 15px;
+	overflow: hidden;
 }
 
 #writeTextArea {
-	border: none;
+	border:none;
+	outline: none;
+	padding: 20px;
 }
 
 #comment {
@@ -30,5 +46,87 @@ header {
 
 .logo-text, .logo-text:hover {
 	text-decoration: none;
-	color: black;
+	color:#045FB4;
+	font-style: italic;
+}
+
+.profileImageCircle {
+	width: 50px;
+    height:50px; 
+    border-radius: 70%;
+    overflow: hidden;
+}
+
+.profileImageRatio {
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#logoutText {
+	text-decoration: none;
+	font-size: 12px;
+	font-style: italic;
+	color:#2E9AFE;
+}
+
+#logoutText:hover {
+	text-decoration: none;
+	font-weight: 600;
+	color:#2E9AFE;
+}
+
+#loginText {
+	color: #045FB4;
+	font-size: 13px;
+	font-style: italic;
+	text-decoration: none;
+}
+
+#loginText:hover {
+	color: #2E9AFE;
+}
+
+.stop-drag {
+	-webkit-user-select: none !important; 
+	-moz-user-select: -moz-none !important;
+	-ms-user-select: none !important;
+	user-select: none !important;
+}
+
+.rounded-image {
+	border-radius: 5%;
+	overflow: hidden;
+}
+
+.card {
+	margin-top: 50px;
+	border-color: #E6E6E6;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.card-top {
+	background-color:#EFFBFB;
+}
+
+.card-comment-desc {
+	font-size: larger;
+	background-color:#EFFBFB;
+}
+
+.myCard {
+	margin-top: 25px;
+	border-color: #E6E6E6;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+#userNameInHead, #userNameInHead:hover {
+	color: #045FB4;
+	text-decoration: none;
+}
+
+.password-change {
+	background-color:#EFFBFB;
 }

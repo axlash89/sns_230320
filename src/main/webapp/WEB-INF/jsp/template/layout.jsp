@@ -17,9 +17,9 @@
 <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 <!-- static-path-pattern: /static/**  <- 이게 있으므로 /static으로 시작 -->
 </head>
-<body>
+<body class="d-flex justify-content-center">
 
-	<div id="wrap" class="container">
+	<div id="wrap">
 		
 		<header>
 			<jsp:include page="../include/header.jsp"/>
