@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sns.common.SHA256;
 import com.sns.user.bo.UserBO;
@@ -177,6 +178,51 @@ public class UserRestController {
 		} else {
 			result.put("code", 500);
 			result.put("errorMessage", "기존 비밀번호가 일치하지 않습니다.");
+		}
+		
+		return result;
+		
+	}
+	
+	@PostMapping("/image_update")
+	public Map<String, Object> imageUpdate(
+			HttpSession session,
+			@RequestParam("file") MultipartFile file) {
+		
+		int userId = (int)session.getAttribute("userId");
+		
+		UserEntity userEntity = userBO.updateUserEntityProfileImagePathById(userId, file);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if (userEntity != null) {
+			session.setAttribute("profileImagePath", userEntity.getProfileImagePath());
+			result.put("code", 1);
+			result.put("result", "성공");	
+		} else {
+			result.put("code", 500);
+			result.put("errorMessage", "이미지 변경 실패");
+		}
+		
+		return result;
+		
+	}
+	
+	
+	@PostMapping("/image_delete")
+	public Map<String, Object> imageDelete(HttpSession session) {
+		
+		int userId = (int)session.getAttribute("userId");
+		UserEntity userEntity = userBO.updateUserEntityProfileImageNullPathById(userId);
+		
+		Map<String, Object> result = new HashMap<>();		
+		if (userEntity != null) {
+			session.removeAttribute("profileImagePath");
+			result.put("code", 1);
+			result.put("result", "성공");	
+		} else {
+			result.put("code", 500);
+			result.put("errorMessage", "이미지 삭제 실패");
 		}
 		
 		return result;

@@ -45,21 +45,21 @@
 	</c:otherwise>
 </c:choose>
 
-<div class="d-flex justify-content-around mt-5">
+<div class="d-flex justify-content-around mt-5 stop-drag">
 	<div>
-		<div class="text-center">팔로워</div>
+		<div class="text-center text-primary h3">팔로워</div>
 		<c:forEach items="${followerList}" var="follower">
-			<div>
-				${follower.userId}
+			<div class="text-center text-primary h4">
+				<a href="/user/other_profile_view?userId=${follower.userId}">${follower.userId}</a>
 			</div>		
 		</c:forEach>
 	</div>
 	<div>
-		<div class="text-center">팔로잉</div>
+		<div class="text-center text-primary h3">팔로잉</div>
 		<c:forEach items="${followingList}" var="following">
-			<div>
-				${following.followId}
-			</div>		
+			<div class="text-center text-primary h4">
+				<a href="/user/other_profile_view?userId=${following.followId}">${following.followId}</a>
+			</div>	
 		</c:forEach>
 	</div>
 </div>

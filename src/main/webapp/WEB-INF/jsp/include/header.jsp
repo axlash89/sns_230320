@@ -20,15 +20,15 @@
 				<div class="mr-3">
 					<c:choose>
 						<c:when test="${not empty profileImagePath}">
-							<div class="profileImageCircle">
-								<a href="/user/profile_view"><img src="${profileImagePath}" width="50px" alt="프로필 이미지" class="profileImageRatio"></a>
+							<div class="profile-image-circle">
+								<a href="/user/profile_view"><img src="${profileImagePath}" width="50px" alt="프로필 이미지" class="profile-image-ratio"></a>
 							</div>
 						</c:when>
 						<c:otherwise>
-							<div class="profileImageCircle">
+							<div class="profile-image-circle">
 								<a href="/user/profile_view"><img
 									src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-									width="50px" alt="프로필 이미지" class="profileImageRatio"></a>
+									width="50px" alt="프로필 이미지" class="profile-image-ratio"></a>
 							</div>
 						</c:otherwise>
 					</c:choose>

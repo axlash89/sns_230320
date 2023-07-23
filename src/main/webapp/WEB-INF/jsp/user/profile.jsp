@@ -4,17 +4,39 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="d-flex justify-content-center mt-5">
 	<div>
-	<div class="text-center h4 mb-3 font-weight-bold">내 정보</div>
-		<c:choose>
-			<c:when test="${not empty profile.profileImagePath}">
-				<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
-				<button class="image-change-btn btn btn-info btn-sm mt-2">프로필 이미지 수정</button></center>
-			</c:when>
-			<c:otherwise>
-				<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
-				<button class="image-change-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button></center>
-			</c:otherwise>
-		</c:choose>
+		<div class="text-center h3 font-weight-bold stop-drag">내 정보</div>
+		
+		<div class="file-upload d-flex ml-3">
+			<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것처럼 효과를 준다. --%>
+			<input type="file" id="file" accept=".jpg, .jpeg, .png, .gif" class="d-none">
+		</div>		
+		
+			<c:choose>
+				<c:when test="${not empty profile.profileImagePath}">
+					<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
+					<div><button class="image-change-open-btn btn btn-info mt-2">프로필 이미지 변경</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 변경 취소</button></div>
+					</center>
+				</c:when>
+				<c:otherwise>
+					<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
+					<button class="image-change-open-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 올리기 취소</button></center>
+				</c:otherwise>
+			</c:choose>
+			<div class="d-flex justify-content-between mt-3 border py-3 hidden" id="imageChangeBox">
+				<div class="mt-1 ml-4"><span id="fileName">첨부파일 없음</span></div>
+				<div class="d-flex">
+					<div><a href="#" id="fileUploadBtn" class="pr-4"><img width="25px" src="https://cdn4.iconfinder.com/data/icons/camera-20/1314/camera_upload-64.png"></a></div>
+					<c:choose>
+						<c:when test="${not empty profile.profileImagePath}">
+							<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">변경</button></div>
+						</c:when>
+						<c:otherwise>
+							<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">올리기</button></div>
+						</c:otherwise>
+					</c:choose>	
+				</div>
+			</div>
+			<center><div><button class="btn btn-warning btn-sm mt-2" id="imageDeleteBtn">프로필 이미지 삭제</button></div></center>
 		
 		<table class="table table-border mt-4 stop-drag">
 			<tr>
@@ -23,7 +45,7 @@
 			</tr>
 			<tr>
 				<th></th>
-				<td><button id="passwordChangeOpenBtn" class="btn btn-secondary btn-sm">비밀번호 변경</button></td>
+				<td><button id="passwordChangeOpenBtn" class="btn btn-primary btn-sm">비밀번호 변경</button></td>
 			</tr>			
 			<tr class="password-change hidden">
 				<th class="text-center pt-4">기존 비밀번호</th>
@@ -58,21 +80,21 @@
 	</div>
 </div>
 
-<div class="d-flex justify-content-around mt-5">
+<div class="d-flex justify-content-around mt-2 stop-drag">
 	<div>
-		<div class="text-center">팔로워</div>
+		<div class="text-center h4 font-weight-bold pb-2">팔로워</div>
 		<c:forEach items="${followerList}" var="follower">
-			<div>
-				${follower.userId}
+			<div class="text-center text-primary h4">
+				<a href="/user/other_profile_view?userId=${follower.userId}">${follower.userId}</a>
 			</div>		
 		</c:forEach>
 	</div>
 	<div>
-		<div class="text-center">팔로잉</div>
+		<div class="text-center h4 font-weight-bold pb-2">팔로잉</div>
 		<c:forEach items="${followingList}" var="following">
-			<div>
-				${following.followId}
-			</div>		
+			<div class="text-center text-primary h4">
+				<a href="/user/other_profile_view?userId=${following.followId}">${following.followId}</a>
+			</div>	
 		</c:forEach>
 	</div>
 </div>
@@ -81,14 +103,149 @@
 
 $(document).ready(function(){
 	
+	$('.image-change-open-btn').on('click', function() {
+		if($('.image-change-close-btn').hasClass('hidden')) {
+			$('#imageChangeBox').removeClass('hidden');
+			$('.image-change-open-btn').addClass('hidden');
+			$('.image-change-close-btn').removeClass('hidden');
+		} else {
+			$('#imageChangeBox').addClass('hidden');
+		}
+	})
+	
+	$('.image-change-close-btn').on('click', function() {
+		$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
+		$('#fileName').text('첨부파일 없음');
+		if($('.image-change-open-btn').hasClass('hidden')) {
+			$('#imageChangeBox').addClass('hidden');
+			$('.image-change-open-btn').removeClass('hidden');
+			$('.image-change-close-btn').addClass('hidden');
+		} else {
+			$('#imageChangeBox').removeClass('hidden');
+		}
+	})
+	
+	$('#fileUploadBtn').on('click', function(e) {
+		e.preventDefault();
+		$('#file').click();
+	});
+	
+	function lessThanFiveMegaBytes(){
+		if(document.getElementById("file").value!=""){
+			let fileSize = document.getElementById("file").files[0].size;
+			let maxSize = 5 * 1024 * 1024;  // 5MB
+			
+			if(fileSize > maxSize){				
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	
+	// 사용자가 이미지를 선택하는 순간 유효성 확인 및 업로드 된 파일명 노출
+	$('#file').on('change', function(e) {
+		if(lessThanFiveMegaBytes() == false) {
+			alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다. ");
+			$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
+			$('#fileName').text('');
+			return;
+		}
+		
+		let fileName = e.target.files[0].name;  // git10.jpg
+		// console.log(fileName);
+		
+		// 확장자 유효성 확인
+		let ext = fileName.split(".").pop().toLowerCase();
+		// alert(ext);
+		if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "gif") {
+			alert("이미지 파일(jpg, jpeg, png, gif)만 업로드 할 수 있습니다.")
+			$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
+			$('#fileName').text('');
+			return;
+		}
+		// 유효성 통과한 이미지는 상자에 업로드 된 파일 이름 노출
+		$('#fileName').text(fileName);						
+	});
+	
+	
+	$('.image-change-btn').on('click', function() {
+		
+		if($('#fileName').text() == "첨부파일 없음") {
+			alert("이미지 파일을 첨부 후 업로드 버튼을 눌러주세요.");
+			return;
+		}
+				
+		let formData = new FormData();
+		formData.append("file", $('#file')[0].files[0]);
+		
+		$.ajax({
+			type: "post"
+			, url: "/user/image_update"
+			, data: formData
+			, enctype: "multipart/form-data"
+			, processData: false
+			, contentType: false
+			
+			, success: function(data) {
+				if (data.code == 1) {
+					alert("이미지 업로드 완료");
+					location.reload(true);
+				} else {
+					alert(data.errorMessage);
+				}
+			}
+			
+			, error:function(request, status, error) {
+				alert("이미지 업로드 실패, 관리자에게 문의하세요.")
+			}		
+		});
+				
+	});
+	
+	$('#imageDeleteBtn').on('click', function(){
+		
+		let result = confirm("프로필 이미지를 삭제하시겠습니까?");
+		if (!result) {
+			return;
+		}
+		
+		$.ajax({
+			
+			type: "post"
+			, url: "/user/image_delete"
+			, processData: false
+			, contentType: false
+			
+			, success: function(data) {
+				if (data.code == 1) {
+					alert("이미지 삭제 완료");
+					location.reload(true);
+				} else {
+					alert(data.errorMessage);
+				}
+			}
+			
+			, error:function(request, status, error) {
+				alert("이미지 삭제 실패, 관리자에게 문의하세요.")
+			}
+		});
+		
+	});
+	
+	
 	$('#passwordChangeOpenBtn').on('click', function() {
 		if($('#passwordChangeOpenBtn').text() == "비밀번호 변경 취소") {
+			$('#passwordChangeOpenBtn').removeClass("btn-secondary");
+			$('#passwordChangeOpenBtn').addClass("btn-primary");	
 			$('.password-change').addClass('hidden');
 			$('#passwordChangeOpenBtn').text("비밀번호 변경");
 			$('#originalPassword').val('');
 			$('#newPassword').val('');
 			$('#newPasswordCheck').val('');
 		} else {
+			$('#passwordChangeOpenBtn').removeClass("btn-primary");
+			$('#passwordChangeOpenBtn').addClass("btn-secondary");	
 			$('.password-change').removeClass('hidden');
 			$('#passwordChangeOpenBtn').text("비밀번호 변경 취소");
 		}		

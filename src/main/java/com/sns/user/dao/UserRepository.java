@@ -1,5 +1,7 @@
 package com.sns.user.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 	public UserEntity findByLoginId(String loginId);
 	
 	public UserEntity findByLoginIdAndPassword(String loginId, String password);
+	
+	public List<UserEntity> findAllByOrderById();
 	
 }

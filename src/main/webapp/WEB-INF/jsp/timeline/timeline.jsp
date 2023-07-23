@@ -23,11 +23,8 @@
 		<c:forEach items="${postList}" var="post">
 			<div class="card">
 				<div class="card-top border d-flex justify-content-between align-items-center py-2">
-					<div class="font-weight-bold ml-3"><img src="https://cdn.pixabay.com/photo/2012/04/13/21/07/user-33638_1280.png" width="35px" alt="프로필 이미지"><span class="ml-2">${post.userId}</span></div>
-						
-			
+					<div class="font-weight-bold ml-3"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${post.userId}</span></div>
 					<a href="#" class="more-btn"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
-				
 				</div>
 				<div class="card-img">
 					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
@@ -50,7 +47,6 @@
 				<div class="card-comment-desc font-weight-bold border w-100 pl-3 py-2 mt-3">
 				댓글
 				</div>
-				
 				<div class="card-comment-list px-3">
 					<c:forEach items="${commentList}" var="comment">
 						<c:if test="${post.id eq comment.postId}">
@@ -69,7 +65,7 @@
 				</div>
 				<div class="card-bottom"></div>
 			</div>
-		</c:forEach>
+		</c:forEach>	
 	</div>
 </div>
 
