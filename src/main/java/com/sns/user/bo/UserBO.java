@@ -24,7 +24,7 @@ public class UserBO {
 		return userRepository.findByLoginId(loginId);
 	}
 	
-	public UserEntity getUserEntityByUserId(int userId) {
+	public UserEntity getUserEntityById(int userId) {
 		return userRepository.findById(userId).orElse(null);
 	}
 	

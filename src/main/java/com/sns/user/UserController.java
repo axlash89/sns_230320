@@ -112,7 +112,7 @@ public class UserController {
 			return "redirect:/user/profile_view";
 		}
 		
-		UserEntity userEntity = userBO.getUserEntityByUserId(userId);
+		UserEntity userEntity = userBO.getUserEntityById(userId);
 		model.addAttribute("profile", userEntity);
 		
 		Follow follow = followBO.getFollow(currUserId, userId);

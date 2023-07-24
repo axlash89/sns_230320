@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="d-flex justify-content-center mt-5">
 	<div>
-	
 		<c:choose>
 			<c:when test="${not empty profile.profileImagePath}">
 				<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div></center>
@@ -129,7 +128,7 @@ $(document).ready(function(){
 				if (data.code == 1) {
 					location.href="/user/other_profile_view";
 					document.location.reload(true);  // 제자리 새로고침
-					alert(loginId + "(" + name +  ")님 팔로우 완료")
+					// alert(loginId + "(" + name +  ")님 팔로우 완료")
 				} else {
 					alert(data.errorMessage);
 				}

@@ -2,7 +2,6 @@ package com.sns.common;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileManagerService {
 
-	public static final String FILE_UPLOAD_PATH = "C:\\Users\\axlas\\Desktop\\kotaeyoung\\6_spring_project\\sns\\workspace\\images/";
-//	public static final String FILE_UPLOAD_PATH = "D:\\kotaeyoung\\6_spring_project\\sns\\workspace\\images/";
+//	public static final String FILE_UPLOAD_PATH = "C:\\Users\\axlas\\Desktop\\kotaeyoung\\6_spring_project\\sns\\workspace\\images/";
+	public static final String FILE_UPLOAD_PATH = "D:\\kotaeyoung\\6_spring_project\\sns\\workspace\\images/";
 	
 	
 	
@@ -90,6 +89,12 @@ public class FileManagerService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+//		try {
+//			Files.delete(path.getRoot());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	

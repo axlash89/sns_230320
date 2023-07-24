@@ -20,14 +20,21 @@
 </div>
 <div class="d-flex justify-content-center">
 	<div class="timeline-box w-75">
-		<c:forEach items="${postList}" var="post">
+		<c:forEach items="${cardList}" var="card">
 			<div class="card">
 				<div class="card-top border d-flex justify-content-between align-items-center py-2">
-					<div class="font-weight-bold ml-3"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${post.userId}</span></div>
+				<c:choose>
+				<c:when test="${not empty card.user.profileImagePath}">
+					<div class="font-weight-bold ml-3"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div>
+				</c:when>
+				<c:otherwise>
+					<div class="font-weight-bold ml-3"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div>
+				</c:otherwise>
+				</c:choose>	
 					<a href="#" class="more-btn"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
 				</div>
 				<div class="card-img">
-					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+					<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
 				<div class="card-like mt-2">
 					<a href="#" class="like-btn"><img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="15px" class="ml-3" alt="빈 하트"></a>
@@ -35,10 +42,10 @@
 					<span class="small">좋아요 11개</span>
 				</div>
 				<div class="card-post mt-2 px-3">
-					<a href="/user/other_profile_view?userId=${post.userId}"><span class="font-weight-bold">${post.userId}</span></a>
-					<span>${post.content}</span>
+					<a href="/user/other_profile_view?userId=${card.post.userId}"><span class="font-weight-bold">${card.post.userId}</span></a>
+					<span>${card.post.content}</span>
 					
-					<fmt:parseDate value="${post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
+					<fmt:parseDate value="${card.post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
 					<div>
 						<span class="small text-secondary float-right mt-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
 					</div>
@@ -48,20 +55,18 @@
 				댓글
 				</div>
 				<div class="card-comment-list px-3">
-					<c:forEach items="${commentList}" var="comment">
-						<c:if test="${post.id eq comment.postId}">
+					<c:forEach items="${card.commentList}" var="comment">						
 							<div class="card-comment my-1">
-								<a href="/user/other_profile_view?userId=${comment.userId}"><span class="font-weight-bold">${comment.userId}</span></a>
-								<span>${comment.content}</span><a href="#" class="comment-del-btn"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-3" width="8px" alt="삭제 버튼 이미지"></a>
-							</div>					
-						</c:if>
+								<a href="/user/other_profile_view?userId=${comment.user.id}"><span class="font-weight-bold">${comment.user.loginId}</span></a>
+								<span>${comment.comment.content}</span><a href="#" class="comment-del-btn"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-3" width="8px" alt="삭제 버튼 이미지"></a>
+							</div>	
 					</c:forEach>
 				</div>
 				
 				<div class="comment-write m-2 d-flex justify-content-between">
 					<input type="text" placeholder="댓글 내용을 입력하세요" class="comment-input form-control w-100">
 					<!-- <input type="text" class="postIdValue d-none" value="${post.id}"> -->
-					<button type="button" class="comment-btn btn btn-secondary" data-post-id="${post.id}">올리기</button>
+					<button type="button" class="comment-btn btn btn-secondary" data-post-id="${card.post.id}">올리기</button>
 				</div>
 				<div class="card-bottom"></div>
 			</div>
@@ -165,6 +170,15 @@ $(document).ready(function() {
 	$('.comment-btn').on('click', function() {
 		
 		let content = $(this).siblings('.comment-input').val().trim();		
+		// * 댓글 내용 가져오기 방법1
+		// let comment = $(this).siblings('input').val().trim();
+		
+		// * 댓글 내용 가져오기 방법2
+		// let comment = $(this).prev().val().trim();
+		// alert(comment);
+		
+		
+		
 		// let postId = $(this).siblings('.postIdValue').val();
 		let postId = $(this).data('post-id');
 		
