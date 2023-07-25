@@ -3,11 +3,15 @@ package com.sns.timeline.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sns.comment.bo.CommentBO;
 import com.sns.comment.domain.CommentView;
+import com.sns.like.bo.LikeBO;
+import com.sns.like.domain.Like;
 import com.sns.post.bo.PostBO;
 import com.sns.post.entity.PostEntity;
 import com.sns.timeline.domain.CardView;
@@ -26,10 +30,14 @@ public class TimelineBO {
 	@Autowired
 	private CommentBO commentBO;
 	
+	@Autowired
+	private LikeBO likeBO;
+	
 	
 	// input : X
 	// output : List<CardView>
-	public List<CardView> generateCardViewList() {
+	public List<CardView> generateCardViewList(Integer userId) {
+		
 		List<CardView> cardViewList = new ArrayList<>();  // []
 		
 		// 글 목록 가져온다.
@@ -54,6 +62,18 @@ public class TimelineBO {
 			List<CommentView> commentViewList = new ArrayList<>();
 			commentViewList = commentBO.generateCommentViewList(postList.get(i).getId());
 			card.setCommentList(commentViewList);
+			
+			List<Like> LikeList = new ArrayList<>();
+			LikeList = likeBO.getLikeListByPostId(postList.get(i).getId());
+			card.setLikeCount(LikeList.size());	
+			
+			boolean isFilled;
+			if (userId == null) {
+				card.setFilledLike(false);
+			} else {
+				isFilled = likeBO.getLikeByPostIdAndUserId(postList.get(i).getId(), userId);
+				card.setFilledLike(isFilled);
+			}
 			
 			// ★★★★★★ cardViewList에 담는다.
 			cardViewList.add(card);

@@ -55,15 +55,11 @@
  		
  	</select>
  	
- 	<delete id="deleteComment" parameterType="map">
+ 	<delete id="deleteCommentById" parameterType="int">
  		
  		DELETE FROM 
  			`comment`
  		WHERE
- 			#{postId} = `postId`
- 				AND
- 			#{userId} = `userId`
- 				AND
  			#{commentId} = `id` 			
  	
  	</delete>

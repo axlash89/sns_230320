@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.transform.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,13 +47,20 @@ public class CommentRestController {
 	
 	@PostMapping("/delete")
 	public Map<String, Object> delete(
-			@RequestParam("postId") int postId,
-			@RequestParam("commenterId") int userId,
-			@RequestParam("commentId") int commentId) {
-		
-		int row = commentBO.deleteComment(postId, userId, commentId);
+			@RequestParam("commentId") int commentId,
+			HttpSession session) {
 		
 		Map<String, Object> result = new HashMap<>();
+		
+		// 이중 체크
+		Integer userId = (Integer) session.getAttribute("userId");
+		if (userId == null) {
+			result.put("code", 500);
+			result.put("errorMessage", "로그인이 되지 않은 사용자입니다.");
+			return result;
+		}
+		
+		int row = commentBO.deleteCommentById(commentId);		
 		
 		if (row > 0) {
 			result.put("code", 1);

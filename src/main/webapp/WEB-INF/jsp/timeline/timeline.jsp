@@ -37,9 +37,17 @@
 					<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
 				<div class="card-like mt-2">
-					<a href="#" class="like-btn"><img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="15px" class="ml-3" alt="빈 하트"></a>
-					<%-- https://www.iconninja.com/files/527/809/128/heart-icon.png  채워진 하트 --%>
-					<span class="small">좋아요 11개</span>
+					<%-- 인덱스가 유니크 아이디인 것 알기 --%>
+					<c:choose>
+					<c:when test="${card.filledLike}">
+					<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="15px" class="ml-3" alt="채워진 하트"></a>
+					</c:when>
+					<c:otherwise>
+					<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="15px" class="ml-3" alt="빈 하트"></a>
+					</c:otherwise>
+					</c:choose>
+					
+					<span class="small">좋아요 ${card.likeCount}개</span>
 				</div>
 				<div class="card-post mt-2 px-3">
 					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
@@ -55,23 +63,24 @@
 				댓글
 				</div>
 				<div class="card-comment-list px-3">
-					<c:forEach items="${card.commentList}" var="comment">						
+					<c:forEach items="${card.commentList}" var="commentView">						
 							<div class="card-comment my-1">
-								<a href="/user/other_profile_view?userId=${comment.user.id}" class="a-tag-deco-none">
+								<a href="/user/other_profile_view?userId=${commentView.user.id}" class="a-tag-deco-none">
 								<c:choose>
-								<c:when test="${not empty comment.user.profileImagePath}">								
-								<img src="${comment.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
+								<c:when test="${not empty commentView.user.profileImagePath}">								
+								<img src="${commentView.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
 								</c:when>
 								<c:otherwise>
 								<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">
 								</c:otherwise>
 								</c:choose>
-								<span class="font-weight-bold mr-1">${comment.user.loginId}</span></a>
-								<span>${comment.comment.content}</span>
-								<fmt:parseDate value="${comment.comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
-								<span class="comment-date text-secondary float-right pt-2 mr-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
-								<c:if test="${userId eq comment.user.id}">
-								<a href="#" class="comment-del-btn" data-post-id="${card.post.id}" data-commenter-id="${userId}" data-comment-id="${comment.comment.id}"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-2 pb-1" width="8px" alt="삭제 버튼 이미지"></a>
+								<span class="font-weight-bold mr-1">${commentView.user.loginId}</span></a>
+								<span>${commentView.comment.content}</span>
+								<fmt:parseDate value="${commentView.comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
+								<span class="comment-date text-secondary pt-1 float-right mr-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
+								<%-- 댓글 삭제 버튼 - 로그인 된 사람의 댓글일 때 삭제 버튼 노출 --%>
+								<c:if test="${userId eq commentView.user.id}">
+								<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-2 pb-1" width="8px" alt="삭제 버튼 이미지"></a>
 								</c:if>
 							</div>	
 					</c:forEach>
@@ -248,13 +257,9 @@ $(document).ready(function() {
 			return;
 		}
 		
-		let postId = $(this).data("post-id")
-		let commenterId = $(this).data("commenter-id");
 		let commentId = $(this).data("comment-id");
 		
 		let formData = new FormData();
-		formData.append("postId", postId);
-		formData.append("commenterId", commenterId);
 		formData.append("commentId", commentId);
 		
 		$.ajax({
@@ -280,6 +285,35 @@ $(document).ready(function() {
 		
 		});
 		
+	});
+	
+	$('.like-btn').on('click', function(e) {
+		e.preventDefault();
+		
+		let postId = $(this).data("post-id");
+		
+		// 자바스크립트에서도 이거 가능 ↓
+		let userId = "${userId}";
+		
+		$.ajax({
+			
+			type: "get"
+			, url: "/like/" + postId
+			
+			, success: function(data) {
+				if (data.code == 1) {
+					location.href="/timeline/timeline_view";
+					document.location.reload(true);  // 제자리 새로고침
+				} else {
+					alert(data.errorMessage);
+				}
+			} 
+			
+			, error:function(request, status, error) {
+				alert("좋아요 실패, 관리자에게 문의하세요.")
+			}
+		
+		});
 		
 	});
 	

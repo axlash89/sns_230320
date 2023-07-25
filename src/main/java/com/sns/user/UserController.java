@@ -104,14 +104,6 @@ public class UserController {
 		Collections.sort(finalFollowingList, new UserEntityComparator());
 		model.addAttribute("finalFollowingList", finalFollowingList);
 		
-		
-//		int userId = (int) session.getAttribute("userId");
-//		List<PostEntity> myPostList = postBO.getMyPostList(userId);
-//		model.addAttribute("myPostList", myPostList);
-		
-//		List<Comment> commentList = commentBO.getCommentList();
-//		model.addAttribute("commentList", commentList);
-
 		model.addAttribute("view", "user/profile");
 		return "template/layout";
 		
