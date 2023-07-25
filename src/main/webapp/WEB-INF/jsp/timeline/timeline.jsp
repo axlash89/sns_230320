@@ -45,7 +45,7 @@
 					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
 					<span class="post-content-font">${card.post.content}</span>
 					
-					<fmt:parseDate value="${card.post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
+					<fmt:parseDate value="${card.post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
 					<div>
 						<span class="text-secondary float-right mt-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
 					</div>
