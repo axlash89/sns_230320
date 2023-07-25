@@ -51,7 +51,7 @@ public class TimelineBO {
 			
 			
 			// 댓글들을 세팅한다.
-			List<CommentView> commentViewList = new ArrayList<>(); 
+			List<CommentView> commentViewList = new ArrayList<>();
 			commentViewList = commentBO.generateCommentViewList(postList.get(i).getId());
 			card.setCommentList(commentViewList);
 			

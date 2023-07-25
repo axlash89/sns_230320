@@ -20,8 +20,7 @@ public class CardView {
 	private UserEntity user;
 	
 	// 댓글들	
-	private List<CommentView> commentList;
-	
+	private List<CommentView> commentList;	
 	
 	// 좋아요들
 	

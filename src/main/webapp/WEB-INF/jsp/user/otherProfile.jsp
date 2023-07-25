@@ -46,18 +46,18 @@
 
 <div class="d-flex justify-content-around mt-5 stop-drag">
 	<div>
-		<div class="text-center text-primary h3">팔로워</div>
-		<c:forEach items="${followerList}" var="follower">
+		<div class="text-center h4 font-weight-bold pb-2">팔로워</div>
+		<c:forEach items="${finalFollowerList}" var="follower">
 			<div class="text-center text-primary h4">
-				<a href="/user/other_profile_view?userId=${follower.userId}">${follower.userId}</a>
+				<a href="/user/other_profile_view?userId=${follower.id}">${follower.loginId}</a>
 			</div>		
 		</c:forEach>
 	</div>
 	<div>
-		<div class="text-center text-primary h3">팔로잉</div>
-		<c:forEach items="${followingList}" var="following">
+		<div class="text-center h4 font-weight-bold pb-2">팔로잉</div>
+		<c:forEach items="${finalFollowingList}" var="following">
 			<div class="text-center text-primary h4">
-				<a href="/user/other_profile_view?userId=${following.followId}">${following.followId}</a>
+				<a href="/user/other_profile_view?userId=${following.id}">${following.loginId}</a>
 			</div>	
 		</c:forEach>
 	</div>

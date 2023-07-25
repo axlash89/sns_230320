@@ -17,7 +17,7 @@
 						<div id="msgSpace" class="small">&nbsp;</div>
 						<%-- 아이디 체크 결과 --%>
 						<%-- d-none 클래스: display none (보이지 않게) --%>
-						<div id="msgWrongIdLength" class="small text-danger d-none ml-3">ID를 4자 이상 입력해주세요.</div>
+						<div id="msgWrongIdLength" class="small text-danger d-none ml-3">ID는 5~20자 영어 소문자, 숫자만 사용 가능합니다.</div>
 						<div id="msgAlreadyUsedId" class="small text-danger d-none ml-3">이미 사용중인 ID입니다.</div>
 						<div id="msgUsableId" class="small text-success d-none ml-3">사용 가능한 ID 입니다.</div>
 					</div>
@@ -62,10 +62,23 @@
 			$('#msgUsableId').addClass('d-none');
 			$('#msgSpace').removeClass('d-none');
 			
-			if (loginId.length < 4) {
+			let upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			let special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;			
+			let korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+			
+			if (loginId.length < 5 || loginId.length > 20 || special_pattern.test(loginId) || korean.test(loginId)) {
 				$('#msgWrongIdLength').removeClass('d-none');
 				$('#msgSpace').addClass('d-none');
 				return;
+			}
+			
+			let loginIdArr = loginId.split("");
+			for (let i = 0; i < loginIdArr.length; i++) {
+				if (upperCase.includes(loginIdArr[i])) {
+					$('#msgWrongIdLength').removeClass('d-none');
+					$('#msgSpace').addClass('d-none');
+					return;	
+				}
 			}
 			
 			$.ajax({

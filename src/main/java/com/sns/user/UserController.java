@@ -1,5 +1,7 @@
 package com.sns.user;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sns.comment.bo.CommentBO;
+import com.sns.common.UserEntityComparator;
 import com.sns.follow.bo.FollowBO;
 import com.sns.follow.domain.Follow;
 import com.sns.post.bo.PostBO;
@@ -84,10 +87,22 @@ public class UserController {
 		int userId = (int)session.getAttribute("userId");
 		
 		List<Follow> followerList = followBO.getFollowerList(userId);
-		model.addAttribute("followerList", followerList);
+		List<UserEntity> finalFollowerList = new ArrayList<>();
+		for (int i = 0; i < followerList.size(); i++) {
+			UserEntity user = userBO.getUserEntityById(followerList.get(i).getUserId());
+			finalFollowerList.add(user);
+		}				
+		Collections.sort(finalFollowerList, new UserEntityComparator());
+		model.addAttribute("finalFollowerList", finalFollowerList);
 		
 		List<Follow> followingList = followBO.getFollowingList(userId);
-		model.addAttribute("followingList", followingList);
+		List<UserEntity> finalFollowingList = new ArrayList<>();
+		for (int i = 0; i < followingList.size(); i++) {
+			UserEntity user = userBO.getUserEntityById(followingList.get(i).getFollowId());
+			finalFollowingList.add(user);
+		}
+		Collections.sort(finalFollowingList, new UserEntityComparator());
+		model.addAttribute("finalFollowingList", finalFollowingList);
 		
 		
 //		int userId = (int) session.getAttribute("userId");
@@ -99,6 +114,7 @@ public class UserController {
 
 		model.addAttribute("view", "user/profile");
 		return "template/layout";
+		
 	}
 	
 	@GetMapping("/other_profile_view")
@@ -120,11 +136,23 @@ public class UserController {
 			model.addAttribute("follow", follow);
 		}
 		
-		List<Follow> followerList = followBO.getFollowerList(userId);
-		model.addAttribute("followerList", followerList);
+		List<Follow> followerList = followBO.getFollowerList(userId);		
+		List<UserEntity> finalFollowerList = new ArrayList<>();		
+		for (int i = 0; i < followerList.size(); i++) {			
+			UserEntity user = userBO.getUserEntityById(followerList.get(i).getUserId());			
+			finalFollowerList.add(user);
+		}				
+		Collections.sort(finalFollowerList, new UserEntityComparator());
+		model.addAttribute("finalFollowerList", finalFollowerList);
 		
-		List<Follow> followingList = followBO.getFollowingList(userId);
-		model.addAttribute("followingList", followingList);
+		List<Follow> followingList = followBO.getFollowingList(userId);		
+		List<UserEntity> finalFollowingList = new ArrayList<>();		
+		for (int i = 0; i < followingList.size(); i++) {			
+			UserEntity user = userBO.getUserEntityById(followingList.get(i).getFollowId());			
+			finalFollowingList.add(user);
+		}		
+		Collections.sort(finalFollowingList, new UserEntityComparator());
+		model.addAttribute("finalFollowingList", finalFollowingList);
 		
 //		int userId = (int) session.getAttribute("userId");
 //		List<PostEntity> myPostList = postBO.getMyPostList(userId);

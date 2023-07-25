@@ -25,10 +25,10 @@
 				<div class="card-top border d-flex justify-content-between align-items-center py-2">
 				<c:choose>
 				<c:when test="${not empty card.user.profileImagePath}">
-					<div class="font-weight-bold ml-3"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div>
+					<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
 				</c:when>
 				<c:otherwise>
-					<div class="font-weight-bold ml-3"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div>
+					<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
 				</c:otherwise>
 				</c:choose>	
 					<a href="#" class="more-btn"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
@@ -42,31 +42,45 @@
 					<span class="small">좋아요 11개</span>
 				</div>
 				<div class="card-post mt-2 px-3">
-					<a href="/user/other_profile_view?userId=${card.post.userId}"><span class="font-weight-bold">${card.post.userId}</span></a>
-					<span>${card.post.content}</span>
+					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					<span class="post-content-font">${card.post.content}</span>
 					
 					<fmt:parseDate value="${card.post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
 					<div>
-						<span class="small text-secondary float-right mt-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
+						<span class="text-secondary float-right mt-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
 					</div>
 				</div>
 					
-				<div class="card-comment-desc font-weight-bold border w-100 pl-3 py-2 mt-3">
+				<div class="card-comment-desc font-weight-bold border w-100 pl-3 py-2 mt-3 mb-1">
 				댓글
 				</div>
 				<div class="card-comment-list px-3">
 					<c:forEach items="${card.commentList}" var="comment">						
 							<div class="card-comment my-1">
-								<a href="/user/other_profile_view?userId=${comment.user.id}"><span class="font-weight-bold">${comment.user.loginId}</span></a>
-								<span>${comment.comment.content}</span><a href="#" class="comment-del-btn"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-3" width="8px" alt="삭제 버튼 이미지"></a>
+								<a href="/user/other_profile_view?userId=${comment.user.id}" class="a-tag-deco-none">
+								<c:choose>
+								<c:when test="${not empty comment.user.profileImagePath}">								
+								<img src="${comment.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
+								</c:when>
+								<c:otherwise>
+								<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">
+								</c:otherwise>
+								</c:choose>
+								<span class="font-weight-bold mr-1">${comment.user.loginId}</span></a>
+								<span>${comment.comment.content}</span>
+								<fmt:parseDate value="${comment.comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
+								<span class="comment-date text-secondary float-right pt-2 mr-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
+								<c:if test="${userId eq comment.user.id}">
+								<a href="#" class="comment-del-btn" data-post-id="${card.post.id}" data-commenter-id="${userId}" data-comment-id="${comment.comment.id}"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-2 pb-1" width="8px" alt="삭제 버튼 이미지"></a>
+								</c:if>
 							</div>	
 					</c:forEach>
 				</div>
 				
-				<div class="comment-write m-2 d-flex justify-content-between">
-					<input type="text" placeholder="댓글 내용을 입력하세요" class="comment-input form-control w-100">
+				<div class="comment-write m-1 d-flex justify-content-between">
+					<input type="text" placeholder="댓글 내용을 입력하세요" class="comment-input form-control w-100 mb-1">
 					<!-- <input type="text" class="postIdValue d-none" value="${post.id}"> -->
-					<button type="button" class="comment-btn btn btn-secondary" data-post-id="${card.post.id}">올리기</button>
+					<button type="button" class="comment-btn btn btn-secondary btn-sm" data-post-id="${card.post.id}">올리기</button>
 				</div>
 				<div class="card-bottom"></div>
 			</div>
@@ -77,7 +91,17 @@
 <script>
 
 $(document).ready(function() {
-
+	
+	$('.comment-input').keydown(function(keyNum){
+		//현재의 키보드의 입력값을 keyNum으로 받음
+		if(keyNum.keyCode == 13){ 
+			// keydown으로 발생한 keyNum의 숫자체크
+			// 숫자가 enter의 아스키코드 13과 같으면
+			// 기존에 정의된 클릭함수를 호출
+			$(this).siblings('.comment-btn').click();
+		}
+	})
+	
 	// 파일 이미지 클릭 => 숨겨져 있는 type="file"을 동작시킨다.
 	$('#fileUploadBtn').on('click', function(e) {
 		e.preventDefault();  // a태그의 스크롤 올라가는 현상 방지
@@ -213,6 +237,49 @@ $(document).ready(function() {
 			}
 		
 		});
+		
+	});
+	
+	$('.comment-del-btn').on('click', function(e) {
+		e.preventDefault();
+		
+		let result = confirm("댓글을 삭제하시겠습니까?");
+		if (!result) {
+			return;
+		}
+		
+		let postId = $(this).data("post-id")
+		let commenterId = $(this).data("commenter-id");
+		let commentId = $(this).data("comment-id");
+		
+		let formData = new FormData();
+		formData.append("postId", postId);
+		formData.append("commenterId", commenterId);
+		formData.append("commentId", commentId);
+		
+		$.ajax({
+			type: "post"
+			, url: "/comment/delete"
+			, data: formData
+			, processData: false
+			, contentType: false
+			
+			
+			, success: function(data) {
+				if (data.code == 1) {
+					location.href="/timeline/timeline_view";
+					document.location.reload(true);  // 제자리 새로고침
+				} else {
+					alert(data.errorMessage);
+				}
+			} 
+			
+			, error:function(request, status, error) {
+				alert("댓글 삭제 실패, 관리자에게 문의하세요.")
+			}
+		
+		});
+		
 		
 	});
 	

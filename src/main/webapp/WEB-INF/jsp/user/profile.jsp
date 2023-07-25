@@ -2,98 +2,99 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div class="d-flex justify-content-center mt-5">
-	<div>
-		<div class="text-center h3 font-weight-bold stop-drag">내 정보</div>
-		
-		<div class="file-upload d-flex ml-3">
-			<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것처럼 효과를 준다. --%>
-			<input type="file" id="file" accept=".jpg, .jpeg, .png, .gif" class="d-none">
-		</div>		
-		
-			<c:choose>
-				<c:when test="${not empty profile.profileImagePath}">
-					<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
-					<div><button class="image-change-open-btn btn btn-info mt-2">프로필 이미지 변경</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 변경 취소</button></div>
-					</center>
-				</c:when>
-				<c:otherwise>
-					<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
-					<button class="image-change-open-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 올리기 취소</button></center>
-				</c:otherwise>
-			</c:choose>
-			<div class="d-flex justify-content-between mt-3 border py-3 hidden" id="imageChangeBox">
-				<div class="mt-1 ml-4"><span id="fileName">첨부파일 없음</span></div>
-				<div class="d-flex">
-					<div><a href="#" id="fileUploadBtn" class="pr-4"><img width="25px" src="https://cdn4.iconfinder.com/data/icons/camera-20/1314/camera_upload-64.png"></a></div>
-					<c:choose>
-						<c:when test="${not empty profile.profileImagePath}">
-							<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">변경</button></div>
-						</c:when>
-						<c:otherwise>
-							<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">올리기</button></div>
-						</c:otherwise>
-					</c:choose>	
+<div class="d-flex justify-content-center">
+	<div class="d-flex justify-content-center mt-5">
+		<div class="pb-2">
+			<div class="text-center h3 stop-drag font-weight-bold mb-4">내 프로필</div>
+			
+			<div class="file-upload d-flex ml-3">
+				<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것처럼 효과를 준다. --%>
+				<input type="file" id="file" accept=".jpg, .jpeg, .png, .gif" class="d-none">
+			</div>		
+			
+				<c:choose>
+					<c:when test="${not empty profile.profileImagePath}">
+						<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
+						<div><button class="image-change-open-btn btn btn-info mt-2">프로필 이미지 변경</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 변경 취소</button></div>
+						<div><button class="btn btn-warning btn-sm mt-2" id="imageDeleteBtn">프로필 이미지 삭제</button></div></center>
+					</c:when>
+					<c:otherwise>
+						<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
+						<button class="image-change-open-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 올리기 취소</button></center>
+					</c:otherwise>
+				</c:choose>
+				<div class="d-flex justify-content-between mt-3 border py-3 hidden" id="imageChangeBox">
+					<div class="mt-1 ml-4"><span id="fileName">첨부파일 없음</span></div>
+					<div class="d-flex">
+						<div><a href="#" id="fileUploadBtn" class="pr-4"><img width="25px" src="https://cdn4.iconfinder.com/data/icons/camera-20/1314/camera_upload-64.png"></a></div>
+						<c:choose>
+							<c:when test="${not empty profile.profileImagePath}">
+								<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">변경</button></div>
+							</c:when>
+							<c:otherwise>
+								<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">올리기</button></div>
+							</c:otherwise>
+						</c:choose>	
+					</div>
 				</div>
-			</div>
-			<center><div><button class="btn btn-warning btn-sm mt-2" id="imageDeleteBtn">프로필 이미지 삭제</button></div></center>
-		
-		<table class="table table-border mt-4 stop-drag">
-			<tr>
-				<th class="text-center">아이디</th>
-				<td>${profile.loginId}</td>
-			</tr>
-			<tr>
-				<th></th>
-				<td><button id="passwordChangeOpenBtn" class="btn btn-primary btn-sm">비밀번호 변경</button></td>
-			</tr>			
-			<tr class="password-change hidden">
-				<th class="text-center pt-4">기존 비밀번호</th>
-				<td><input type="password" id="originalPassword" class="form-control col-10 ml-2" name="password" placeholder="비밀번호 입력"></td>
-			</tr>
-			<tr class="password-change hidden">
-				<th class="text-center pt-4">* 새 비밀번호</th>
-				<td><input type="password" id="newPassword" class="form-control col-10 ml-2" placeholder="수정할 비밀번호 입력"></td>
-			</tr>
-			<tr class="password-change hidden">
-				<th class="text-center pt-4">* 새 비밀번호 확인</th>
-				<td><input type="password" id="newPasswordCheck" class="form-control col-10 ml-2" placeholder="수정할 비밀번호 확인"></td>
-			</tr>
-			<tr class="password-change hidden">
-				<th></th>
-				<td><button id="passwordChangeBtn" class="btn btn-dark btn-sm float-right mr-5">변경</button></td>
-			</tr>
-			<tr>
-				<th class="text-center">이름</th>
-				<td>${profile.name}</td>
-			</tr>
-			<tr>
-				<th class="text-center">이메일</th>
-				<td>${profile.email}</td>
-			</tr>
-			<tr>
-				<th class="text-center">가입일자</th>
-				<fmt:parseDate value="${profile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
-				<td><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일"/></td>
-			</tr>
-		</table>
+			
+			<table class="table table-border mt-4 stop-drag">
+				<tr>
+					<th class="text-center">아이디</th>
+					<td>${profile.loginId}</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><button id="passwordChangeOpenBtn" class="btn btn-primary btn-sm">비밀번호 변경</button></td>
+				</tr>			
+				<tr class="password-change hidden">
+					<th class="text-center pt-4">기존 비밀번호</th>
+					<td><input type="password" id="originalPassword" class="form-control col-10 ml-2" name="password" placeholder="비밀번호 입력"></td>
+				</tr>
+				<tr class="password-change hidden">
+					<th class="text-center pt-4">* 새 비밀번호</th>
+					<td><input type="password" id="newPassword" class="form-control col-10 ml-2" placeholder="수정할 비밀번호 입력"></td>
+				</tr>
+				<tr class="password-change hidden">
+					<th class="text-center pt-4">* 새 비밀번호 확인</th>
+					<td><input type="password" id="newPasswordCheck" class="form-control col-10 ml-2" placeholder="수정할 비밀번호 확인"></td>
+				</tr>
+				<tr class="password-change hidden">
+					<th></th>
+					<td><button id="passwordChangeBtn" class="btn btn-dark btn-sm float-right mr-5">변경</button></td>
+				</tr>
+				<tr>
+					<th class="text-center">이름</th>
+					<td>${profile.name}</td>
+				</tr>
+				<tr>
+					<th class="text-center">이메일</th>
+					<td>${profile.email}</td>
+				</tr>
+				<tr>
+					<th class="text-center">가입일자</th>
+					<fmt:parseDate value="${profile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedCreatedAt"/>
+					<td><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일"/></td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </div>
 
 <div class="d-flex justify-content-around mt-2 stop-drag">
 	<div>
 		<div class="text-center h4 font-weight-bold pb-2">팔로워</div>
-		<c:forEach items="${followerList}" var="follower">
+		<c:forEach items="${finalFollowerList}" var="follower">
 			<div class="text-center text-primary h4">
-				<a href="/user/other_profile_view?userId=${follower.userId}">${follower.userId}</a>
+				<a href="/user/other_profile_view?userId=${follower.id}">${follower.loginId}</a>
 			</div>		
 		</c:forEach>
 	</div>
 	<div>
 		<div class="text-center h4 font-weight-bold pb-2">팔로잉</div>
-		<c:forEach items="${followingList}" var="following">
+		<c:forEach items="${finalFollowingList}" var="following">
 			<div class="text-center text-primary h4">
-				<a href="/user/other_profile_view?userId=${following.followId}">${following.followId}</a>
+				<a href="/user/other_profile_view?userId=${following.id}">${following.loginId}</a>
 			</div>	
 		</c:forEach>
 	</div>

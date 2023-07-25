@@ -44,4 +44,26 @@ public class CommentRestController {
 				
 	}
 	
+	@PostMapping("/delete")
+	public Map<String, Object> delete(
+			@RequestParam("postId") int postId,
+			@RequestParam("commenterId") int userId,
+			@RequestParam("commentId") int commentId) {
+		
+		int row = commentBO.deleteComment(postId, userId, commentId);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if (row > 0) {
+			result.put("code", 1);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("errorMessage", "댓글 삭제 실패");
+		}
+		
+		return result;
+		
+	}
+	
 }

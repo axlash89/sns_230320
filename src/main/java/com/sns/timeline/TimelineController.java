@@ -39,8 +39,6 @@ public class TimelineController {
 //		model.addAttribute("commentList", commentList);
 		// model.addAttribute("userList", userList);
 		
-		
-		// 브레이크 포인트 잡고 디버깅 한번 봐보기
 		List<CardView> cardList = timelineBO.generateCardViewList();
 		
 		model.addAttribute("cardList", cardList);

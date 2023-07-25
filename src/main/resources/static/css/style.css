@@ -44,6 +44,10 @@ header {
 	border: none;
 }
 
+.comment-btn {
+	height: 33px;
+}
+
 .logo-text, .logo-text:hover {
 	text-decoration: none;
 	color:#045FB4;
@@ -61,6 +65,16 @@ header {
 	width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.comment-profile-image-circle {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-right: 2px;
+	width: 25px;
+    height:23px; 
+    border-radius: 70%;
+    overflow: hidden;
 }
 
 #logoutText {
@@ -115,6 +129,13 @@ header {
 
 .card-top {
 	background-color:#EFFBFB;
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.post-userLoginId {
+	font-size: 15px;
+	font-weight: bold;
 }
 
 .card-comment-desc {
@@ -133,4 +154,17 @@ header {
 
 #imageChangeBox {
 	width: 400px;
+}
+
+.a-tag-deco-none, .a-tag-deco-none:hover {
+	text-decoration: none;
+	color: #045FB4;
+}
+
+.comment-date {
+	font-size: 12px;
+}
+
+.post-content-font {
+	font-size: 16px;
 }

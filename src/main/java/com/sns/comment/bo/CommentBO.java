@@ -32,24 +32,33 @@ public class CommentBO {
 	// input : postId
 	// output : 가공된 댓글 리스트
 	public List<CommentView> generateCommentViewList(int postId) {
-		// 결과 리스트
-		List<Comment> commentList = new ArrayList<>();
-		// 글에 해당하는 댓글
+
+		// 글에 해당하는 댓글들
+		List<Comment> commentList = new ArrayList<>();		
 		commentList = commentMapper.selectCommentListByPostId(postId);
 		
 		List<CommentView> commentViewList = new ArrayList<>();
-		
-		UserEntity user;
 		for (int i = 0; i < commentList.size(); i++) {
+			
 			CommentView commentView = new CommentView();
-			user = userBO.getUserEntityById(commentList.get(i).getUserId());
+			
+			UserEntity user = userBO.getUserEntityById(commentList.get(i).getUserId());
 			commentView.setUser(user);
+			
 			commentView.setComment(commentList.get(i));
+			
+			
 			commentViewList.add(commentView);
+			
 		}
 				
 		// 반복문 순회  comment  =>  commentView   => commentViewList에 담는다.	
 		return commentViewList;
+		
+	}
+	
+	public int deleteComment(int postId, int userId, int commentId) {
+		return commentMapper.deleteComment(postId, userId, commentId);
 	}
 	
 }
