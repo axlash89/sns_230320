@@ -58,4 +58,20 @@
  			 		
  	</select>
  	
+ 	 
+ 	<!-- 선생님 추가 강의, likeCount 하나로 합치기
+ 	<select id="selectLikeCountByPostIdOrUserId" parameterType ="map" resultType="int">
+ 		SELECT
+			COUNT(*)
+ 		FROM
+ 			`like`
+ 		WHERE
+ 			`postId` = #{postId}
+ 			<if test="userId != null">
+ 				AND
+ 			`userId` = #{userId}
+ 			</if>
+ 	</select>
+ 	 -->
+ 	 
  </mapper>

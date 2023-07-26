@@ -32,6 +32,7 @@ public class TimelineController {
 	
 	@GetMapping("/timeline_view")
 	public String timelineListView(Model model, HttpSession session) {
+		
 		// postList를 jpa로 가져오기
 //		List<PostEntity> postList = postBO.getPostList();
 //		List<Comment> commentList = commentBO.getCommentList();
@@ -49,6 +50,7 @@ public class TimelineController {
 		
 		model.addAttribute("view", "timeline/timeline");
 		return "template/layout";
+		
 	}
 	
 }

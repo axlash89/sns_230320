@@ -24,4 +24,19 @@ public interface LikeMapper {
 	
 	public List<Like> selectLikeListByPostId(int postId);
 	
+	
+//	// 선생님 추가 강의
+//	public int selectLikeCountByPostIdUserId(
+//			@Param("postId") int postId, 
+//			@Param("userId") int userId);
+//	
+//	public int selectLikeCountByPostId(int postId);
+//	
+//	
+//	// by postId userId, by postId  =>  하나의 쿼리로 합친다.
+//	public int selectLikeCountByPostIdOrUserId(
+//			@Param("postId") int postId, 
+//			@Param("userId") Integer userId);
+	
+	
 }

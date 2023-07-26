@@ -32,13 +32,24 @@ public class LikeBO {
 		return likeMapper.selectLikeListByPostId(postId);
 	}
 	
-	public boolean getLikeByPostIdAndUserId(int postId, int userId) {
+//	public int getLikeCountByPostId(int postId) {
+//		return likeMapper.selectLikeCountByPostId(postId);
+//	}
+	
+	// 비로그인인 경우도 있을 수 있으므로 userId는 Integer로!
+	public boolean getLikeByPostIdAndUserId(int postId, Integer userId) {
+		
+		if (userId == null) {
+			return false;
+		}
 		
 		if (likeMapper.selectLikeByPostIdAndUserId(postId, userId) != null) {
 			return true;
 		} else {
 			return false;
 		}
+		
+//		return likeMapper.selectLikeCountByPostIdUserId(postId, userId) > 0;
 				
 	}
 	
