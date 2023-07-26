@@ -36,7 +36,7 @@
 </div>
 
 <c:choose>
-	<c:when test="${profile.id eq follow.followId}">
+	<c:when test="${follow}">
 	<div class="text-center"><button class="btn btn-primary" id="unfollowBtn" data-unfollow-id="${profile.id}" data-login-id="${profile.loginId}" data-name="${profile.name}">언팔로우</button></div>
 	</c:when>
 	<c:otherwise>

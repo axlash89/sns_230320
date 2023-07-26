@@ -428,9 +428,9 @@ $(document).ready(function() {
 			}
 		}
 		
-		let postId = $(this).data("post-id");	
+		let postId = $(this).data("post-id");
 		
-		$.ajax({			
+		$.ajax({
 			type: "get"
 			, url: "/like/" + postId
 			

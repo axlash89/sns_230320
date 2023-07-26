@@ -80,28 +80,21 @@ public class UserController {
 	public String profile(Model model,
 			HttpSession session) {
 		
+		// 로그인 안했으면 접근 못하게
 		String userLoginId = (String)session.getAttribute("userLoginId");		
+		if (userLoginId == null) {
+			return "redirect:/user/sign_in_view";
+		}
+		
 		UserEntity userEntity = userBO.getUserEntityByLoginId(userLoginId);		
 		model.addAttribute("profile", userEntity);
 		
-		int userId = (int)session.getAttribute("userId");
+		int userId = (int)session.getAttribute("userId");		
 		
-		List<Follow> followerList = followBO.getFollowerList(userId);
-		List<UserEntity> finalFollowerList = new ArrayList<>();
-		for (int i = 0; i < followerList.size(); i++) {
-			UserEntity user = userBO.getUserEntityById(followerList.get(i).getUserId());
-			finalFollowerList.add(user);
-		}				
-		Collections.sort(finalFollowerList, new UserEntityComparator());
+		List<UserEntity> finalFollowerList = userBO.getFollowerList(userId);		
 		model.addAttribute("finalFollowerList", finalFollowerList);
 		
-		List<Follow> followingList = followBO.getFollowingList(userId);
-		List<UserEntity> finalFollowingList = new ArrayList<>();
-		for (int i = 0; i < followingList.size(); i++) {
-			UserEntity user = userBO.getUserEntityById(followingList.get(i).getFollowId());
-			finalFollowingList.add(user);
-		}
-		Collections.sort(finalFollowingList, new UserEntityComparator());
+		List<UserEntity> finalFollowingList = userBO.getFollowingList(userId);
 		model.addAttribute("finalFollowingList", finalFollowingList);
 		
 		model.addAttribute("view", "user/profile");
@@ -110,12 +103,17 @@ public class UserController {
 	}
 	
 	@GetMapping("/other_profile_view")
-	public String profile(Model model,
+	public String otherProfile(Model model,
 			HttpSession session,
 			@RequestParam("userId") int userId) {
 		
+		// 로그인 안했으면 접근 못하게
+		String userLoginId = (String)session.getAttribute("userLoginId");		
+		if (userLoginId == null) {
+			return "redirect:/user/sign_in_view";
+		}
+
 		int currUserId = (int)session.getAttribute("userId");
-		
 		if (userId == currUserId) {
 			return "redirect:/user/profile_view";
 		}
@@ -123,36 +121,15 @@ public class UserController {
 		UserEntity userEntity = userBO.getUserEntityById(userId);
 		model.addAttribute("profile", userEntity);
 		
-		Follow follow = followBO.getFollow(currUserId, userId);
-		if (follow != null) {
-			model.addAttribute("follow", follow);
-		}
-		
-		List<Follow> followerList = followBO.getFollowerList(userId);		
-		List<UserEntity> finalFollowerList = new ArrayList<>();		
-		for (int i = 0; i < followerList.size(); i++) {			
-			UserEntity user = userBO.getUserEntityById(followerList.get(i).getUserId());			
-			finalFollowerList.add(user);
-		}				
-		Collections.sort(finalFollowerList, new UserEntityComparator());
+		boolean follow = userBO.getFollow(currUserId, userId);
+		model.addAttribute("follow", follow);
+				
+		List<UserEntity> finalFollowerList = userBO.getFollowerList(userId);		
 		model.addAttribute("finalFollowerList", finalFollowerList);
 		
-		List<Follow> followingList = followBO.getFollowingList(userId);		
-		List<UserEntity> finalFollowingList = new ArrayList<>();		
-		for (int i = 0; i < followingList.size(); i++) {			
-			UserEntity user = userBO.getUserEntityById(followingList.get(i).getFollowId());			
-			finalFollowingList.add(user);
-		}		
-		Collections.sort(finalFollowingList, new UserEntityComparator());
+		List<UserEntity> finalFollowingList = userBO.getFollowingList(userId);
 		model.addAttribute("finalFollowingList", finalFollowingList);
 		
-//		int userId = (int) session.getAttribute("userId");
-//		List<PostEntity> myPostList = postBO.getMyPostList(userId);
-//		model.addAttribute("myPostList", myPostList);
-		
-//		List<Comment> commentList = commentBO.getCommentList();
-//		model.addAttribute("commentList", commentList);
-
 		model.addAttribute("view", "user/otherProfile");
 		return "template/layout";
 	}

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -184,7 +185,7 @@ public class UserRestController {
 		
 	}
 	
-	@PostMapping("/image_update")
+	@PutMapping("/image_update")
 	public Map<String, Object> imageUpdate(
 			HttpSession session,
 			@RequestParam("file") MultipartFile file) {

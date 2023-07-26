@@ -37,12 +37,14 @@
  	</insert>
  	
  	<delete id="deleteLikeByPostIdAndUserId" parameterType="map">
+ 	
  		DELETE FROM 
  			`like`
  		WHERE 
  			`postId` = #{postId}
  				AND
  			`userId` = #{userId}	
+ 			
  	</delete>
  	
  	<select id="selectLikeListByPostId" parameterType="map" resultType="com.sns.like.domain.Like">
@@ -61,6 +63,7 @@
  	 
  	<!-- 선생님 추가 강의, likeCount 하나로 합치기
  	<select id="selectLikeCountByPostIdOrUserId" parameterType ="map" resultType="int">
+ 	
  		SELECT
 			COUNT(*)
  		FROM
@@ -71,6 +74,7 @@
  				AND
  			`userId` = #{userId}
  			</if>
+ 			
  	</select>
  	 -->
  	 

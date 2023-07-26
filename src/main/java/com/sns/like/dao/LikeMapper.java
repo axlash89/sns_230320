@@ -23,9 +23,8 @@ public interface LikeMapper {
 			@Param("userId") int userId);
 	
 	public List<Like> selectLikeListByPostId(int postId);
-	
-	
-//	// 선생님 추가 강의
+		
+//	// 선생님 풀이
 //	public int selectLikeCountByPostIdUserId(
 //			@Param("postId") int postId, 
 //			@Param("userId") int userId);

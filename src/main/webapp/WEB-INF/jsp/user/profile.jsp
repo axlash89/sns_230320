@@ -181,7 +181,7 @@ $(document).ready(function(){
 		formData.append("file", $('#file')[0].files[0]);
 		
 		$.ajax({
-			type: "post"
+			type: "put"
 			, url: "/user/image_update"
 			, data: formData
 			, enctype: "multipart/form-data"
