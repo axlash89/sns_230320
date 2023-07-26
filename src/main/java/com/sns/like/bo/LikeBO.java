@@ -14,10 +14,6 @@ public class LikeBO {
 	@Autowired
 	private LikeMapper likeMapper;
 	
-	public List<Like> getLikeListByPostId(int postId) {
-		return likeMapper.selectLikeListByPostId(postId);
-	}
-	
 	public int likeToggle(int postId, int userId) {
 		
 		Like like = likeMapper.selectLikeByPostIdAndUserId(postId, userId);		
@@ -30,6 +26,10 @@ public class LikeBO {
 			return row;
 		}
 		
+	}
+
+	public List<Like> getLikeListByPostId(int postId) {
+		return likeMapper.selectLikeListByPostId(postId);
 	}
 	
 	public boolean getLikeByPostIdAndUserId(int postId, int userId) {

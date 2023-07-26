@@ -41,11 +41,11 @@ public class CommentBO {
 		for (int i = 0; i < commentList.size(); i++) {
 			
 			CommentView commentView = new CommentView();
+
+			commentView.setComment(commentList.get(i));
 			
 			UserEntity user = userBO.getUserEntityById(commentList.get(i).getUserId());
 			commentView.setUser(user);
-			
-			commentView.setComment(commentList.get(i));
 			
 			
 			commentViewList.add(commentView);

@@ -72,7 +72,7 @@ public class UserController {
 		session.removeAttribute("userName");
 		session.removeAttribute("profileImagePath");
 		
-		return "redirect:/user/sign_in_view";
+		return "redirect:/timeline/timeline_view";
 		
 	}
 	

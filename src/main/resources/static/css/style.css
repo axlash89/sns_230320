@@ -168,3 +168,23 @@ header {
 .post-content-font {
 	font-size: 16px;
 }
+
+.comment-id-box {
+	width: 135px;
+	padding-left: 4px;
+	padding-right: 0px;
+}
+
+.comment-content-box {
+	width: 373px;
+	padding-left: 4px;
+	padding-right: 0px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.comment-date-box {
+	width: 100px;
+	padding-left: 7px;
+	padding-right: 0px;
+}

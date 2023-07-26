@@ -23,14 +23,30 @@
 		<c:forEach items="${cardList}" var="card">
 			<div class="card">
 				<div class="card-top border d-flex justify-content-between align-items-center py-2">
+				
 				<c:choose>
-				<c:when test="${not empty card.user.profileImagePath}">
-					<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+				<c:when test="${not empty userId}">
+					<c:choose>
+					<c:when test="${not empty card.user.profileImagePath}">
+						<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+					</c:when>
+					<c:otherwise>
+						<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+					</c:otherwise>
+					</c:choose>	
 				</c:when>
 				<c:otherwise>
-					<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
-				</c:otherwise>
-				</c:choose>	
+					<c:choose>
+					<c:when test="${not empty card.user.profileImagePath}">
+						<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+					</c:when>
+					<c:otherwise>
+						<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+					</c:otherwise>
+					</c:choose>	
+				</c:otherwise>	
+				</c:choose>
+				
 					<a href="#" class="more-btn"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
 				</div>
 				<div class="card-img">
@@ -39,18 +55,24 @@
 				<div class="card-like mt-2">
 					<%-- 인덱스가 유니크 아이디인 것 알기 --%>
 					<c:choose>
-					<c:when test="${card.filledLike}">
-					<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="15px" class="ml-3" alt="채워진 하트"></a>
-					</c:when>
-					<c:otherwise>
-					<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="15px" class="ml-3" alt="빈 하트"></a>
-					</c:otherwise>
-					</c:choose>
-					
-					<span class="small">좋아요 ${card.likeCount}개</span>
+						<c:when test="${card.filledLike}">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://cdn1.iconfinder.com/data/icons/cyber-monday-85/32/like_heart_love_button_follow-256.png" width="25px" class="ml-3" alt="채워진 하트"></a>
+						</c:when>
+						<c:otherwise>
+						<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://cdn1.iconfinder.com/data/icons/cyber-monday-82/32/like_heart_love_button_follow-256.png" width="25px" class="ml-3" alt="빈 하트"></a>
+						</c:otherwise>
+					</c:choose>					
+					<span class="font-weight-bold">좋아요 ${card.likeCount}개</span>
 				</div>
 				<div class="card-post mt-2 px-3">
-					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					<c:choose>
+					<c:when test="${not empty userId}">
+					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					</c:when>
+					<c:otherwise>
+					<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					</c:otherwise>					
+					</c:choose>
 					<span class="post-content-font">${card.post.content}</span>
 					
 					<fmt:parseDate value="${card.post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
@@ -62,26 +84,49 @@
 				<div class="card-comment-desc font-weight-bold border w-100 pl-3 py-2 mt-3 mb-1">
 				댓글
 				</div>
-				<div class="card-comment-list px-3">
+				<div class="card-comment-list px-2">
 					<c:forEach items="${card.commentList}" var="commentView">						
-							<div class="card-comment my-1">
-								<a href="/user/other_profile_view?userId=${commentView.user.id}" class="a-tag-deco-none">
+							<div class="card-comment my-1 d-flex align-items-center">
+								<div class="comment-id-box">
 								<c:choose>
-								<c:when test="${not empty commentView.user.profileImagePath}">								
-								<img src="${commentView.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
+								<c:when test="${not empty userId}">
+									<a href="/user/other_profile_view?userId=${commentView.user.id}" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
+									<c:choose>
+									<c:when test="${not empty commentView.user.profileImagePath}">								
+									<img src="${commentView.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
+									</c:when>
+									<c:otherwise>
+									<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">
+									</c:otherwise>
+									</c:choose>
+									<span class="font-weight-bold mr-1">${commentView.user.loginId}</span></a>
 								</c:when>
 								<c:otherwise>
-								<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">
-								</c:otherwise>
+									<a href="/user/sign_in_view" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
+									<c:choose>
+									<c:when test="${not empty commentView.user.profileImagePath}">								
+									<img src="${commentView.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
+									</c:when>
+									<c:otherwise>
+									<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">
+									</c:otherwise>
+									</c:choose>
+									<span class="font-weight-bold mr-1">${commentView.user.loginId}</span></a>
+								</c:otherwise>					
 								</c:choose>
-								<span class="font-weight-bold mr-1">${commentView.user.loginId}</span></a>
-								<span>${commentView.comment.content}</span>
-								<fmt:parseDate value="${commentView.comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
-								<span class="comment-date text-secondary pt-1 float-right mr-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
-								<%-- 댓글 삭제 버튼 - 로그인 된 사람의 댓글일 때 삭제 버튼 노출 --%>
-								<c:if test="${userId eq commentView.user.id}">
-								<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-2 pb-1" width="8px" alt="삭제 버튼 이미지"></a>
-								</c:if>
+								</div>
+								<div class="comment-content-box">
+									<span>${commentView.comment.content}</span>
+									
+									<%-- 댓글 삭제 버튼 - 로그인 된 사람의 댓글일 때 삭제 버튼 노출 --%>
+									<c:if test="${userId eq commentView.user.id}">
+									<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}"><img src="https://www.iconninja.com/files/603/22/506/x-icon.png" class="ml-2 pb-1" width="8px" alt="삭제 버튼 이미지"></a>
+									</c:if>
+								</div>
+								<div class="comment-date-box text-right">
+									<fmt:parseDate value="${commentView.comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
+									<span class="comment-date text-secondary pt-1 float-right mr-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yy.MM.dd HH:mm"/></span>
+								</div>
 							</div>	
 					</c:forEach>
 				</div>
@@ -100,6 +145,56 @@
 <script>
 
 $(document).ready(function() {
+	
+	$('.card-user-click').on('click', function(e) {
+		e.preventDefault();
+		let userId = "${userId}";
+		let cardUserId = $(this).data('card-user-id');
+		
+		if (userId == "") {
+			
+			let result = confirm("회원정보 열람 기능은 로그인이 필요합니다. 로그인 하시겠습니까?");
+			
+			if (!result) {
+				location.href="/timeline/timeline_view";
+				document.location.reload(true);
+				return;
+			} else {
+				location.href="/user/sign_in_view";
+				return;
+			}
+			
+		} else {
+			
+			location.href="/user/other_profile_view?userId=" + cardUserId;
+			
+		}				
+	});
+	
+	$('.comment-user-click').on('click', function(e) {
+		e.preventDefault();
+		let userId = "${userId}";
+		let commentUserId = $(this).data('comment-user-id');
+		
+		if (userId == "") {
+			
+			let result = confirm("회원정보 열람 기능은 로그인이 필요합니다. 로그인 하시겠습니까?");
+			
+			if (!result) {
+				location.href="/timeline/timeline_view";
+				document.location.reload(true);
+				return;
+			} else {
+				location.href="/user/sign_in_view";
+				return;
+			}
+			
+		} else {
+			
+			location.href="/user/other_profile_view?userId=" + commentUserId;
+			
+		}				
+	});
 	
 	$('.comment-input').keydown(function(keyNum){
 		//현재의 키보드의 입력값을 keyNum으로 받음
@@ -158,10 +253,22 @@ $(document).ready(function() {
 	
 	$('#writeBtn').on('click', function() {
 		
+		let userId = "${userId}";
+		
+		if (userId == "") {
+			let result = confirm("게시물 업로드 기능은 로그인이 필요합니다. 로그인 하시겠습니까?");
+			if (!result) {
+				return;
+			} else {
+				location.href="/user/sign_in_view";
+				return;
+			}
+		}
+		
 		let content = $('#writeTextArea').val().trim();
 		
 		if (!content) {
-			alert("내용을 입력하세요.")
+			alert("내용을 입력하세요.");
 			return;
 		}
 		
@@ -202,6 +309,18 @@ $(document).ready(function() {
 	
 	$('.comment-btn').on('click', function() {
 		
+		let userId = "${userId}";
+		
+		if (userId == "") {
+			let result = confirm("댓글 기능은 로그인이 필요합니다. 로그인 하시겠습니까?");
+			if (!result) {
+				return;
+			} else {
+				location.href="/user/sign_in_view";
+				return;
+			}
+		}
+		
 		let content = $(this).siblings('.comment-input').val().trim();		
 		// * 댓글 내용 가져오기 방법1
 		// let comment = $(this).siblings('input').val().trim();
@@ -216,7 +335,12 @@ $(document).ready(function() {
 		let postId = $(this).data('post-id');
 		
 		if (!content) {
-			alert("댓글 내용을 입력하세요");
+			alert("댓글 내용을 입력하세요.");
+			return;
+		}
+		
+		if (content.length > 70) {
+			alert("댓글은 70자 이내로 작성해주세요. 작성하신 댓글이 " + (content.length - 70) + "자 초과되었습니다.");
 			return;
 		}
 		
@@ -289,14 +413,24 @@ $(document).ready(function() {
 	
 	$('.like-btn').on('click', function(e) {
 		e.preventDefault();
-		
-		let postId = $(this).data("post-id");
-		
+
 		// 자바스크립트에서도 이거 가능 ↓
+		// let userId = "${userId}";
 		let userId = "${userId}";
 		
-		$.ajax({
-			
+		if (userId == "") {
+			let result = confirm("좋아요 기능은 로그인이 필요합니다. 로그인 하시겠습니까?");
+			if (!result) {
+				return;
+			} else {
+				location.href="/user/sign_in_view";
+				return;
+			}
+		}
+		
+		let postId = $(this).data("post-id");	
+		
+		$.ajax({			
 			type: "get"
 			, url: "/like/" + postId
 			
@@ -310,7 +444,7 @@ $(document).ready(function() {
 			} 
 			
 			, error:function(request, status, error) {
-				alert("좋아요 실패, 관리자에게 문의하세요.")
+				alert("좋아요/해제 실패, 관리자에게 문의하세요.")
 			}
 		
 		});

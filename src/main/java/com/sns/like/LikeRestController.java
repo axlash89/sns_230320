@@ -28,15 +28,15 @@ public class LikeRestController {
 
 		Map<String, Object> result = new HashMap<>();
 		
-		// 로그인 여부 체크		
+		// 로그인 여부 체크
 		Integer userId = (Integer) session.getAttribute("userId");
 		if (userId == null) {
-			result.put("code", 500);
+			result.put("code", 300);
 			result.put("errorMessage", "로그인이 필요합니다.");
 			return result;
 		}		
 		
-		// BO 호출 -> like 여부 체크		
+		// BO 호출 -> like 여부 체크	
 		if (likeBO.likeToggle(postId, userId) > 0) {
 			result.put("code", 1);
 			result.put("result", "성공");

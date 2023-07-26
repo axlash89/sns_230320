@@ -41,7 +41,7 @@ public class TimelineController {
 //		model.addAttribute("commentList", commentList);
 		// model.addAttribute("userList", userList);
 		
-		Integer userId = (Integer) session.getAttribute("userId");
+		Integer userId = (Integer)session.getAttribute("userId");
 		
 		List<CardView> cardList = timelineBO.generateCardViewList(userId);
 		

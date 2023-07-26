@@ -3,17 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="d-flex justify-content-between align-items-center">
 
-	<c:choose>
-		<c:when test="${not empty userName}">
-			<a href="/timeline/timeline_view" class="logo-text stop-drag"><div
-					class="h2 font-weight-bold pl-5 mt-4 pt-2">Photogram</div></a>
-		</c:when>
-		<c:otherwise>
-			<a href="/user/sign_in_view" class="logo-text stop-drag"><div
-					class="h2 font-weight-bold pl-5 pb-1">Photogram</div></a>
-		</c:otherwise>
-	</c:choose>
-
+	<a href="/timeline/timeline_view" class="logo-text stop-drag"><div
+			class="h2 font-weight-bold pl-5 mt-4 pt-2">Photogram</div></a>
+					
 	<div class="d-flex align-items-center pt-3">
 		<c:choose>
 			<c:when test="${not empty userName}">
