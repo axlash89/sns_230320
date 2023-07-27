@@ -51,7 +51,7 @@
 				</c:choose>
 					<%-- 내가 쓴 글일 때만 노출 --%>
 					<c:if test="${userId eq card.user.id}">
-					<a href="#" class="more-btn"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
+						<a href="#" class="more-btn" data-toggle="modal" data-target="#eModal" data-post-id="${card.post.id}"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
 					</c:if>
 				</div>
 				<div class="card-img">
@@ -147,34 +147,21 @@
 	</div>
 </div>
 
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
+<div class="modal fade" id="eModal">
+	<%-- modal-sm : 작은 모달 --%>
+	<%-- modal-dialog-centered : 모달창을 수직기준 가운데 위치 --%>
+	<div class="modal-dialog modal-sm modal-dialog-centered">
+		<div class="modal-content text-center font-weight-bold">
+			<div class="py-3 border-bottom">
+     			<a href="#" id="deletePostBtn" class="a-tag-deco-none">삭제하기</a>
+     		</div>
+			<div class="py-3">
+				<a href="#" data-dismiss="modal" class="a-tag-deco-none">취소</a>
+			</div>
+		</div>
+	</div>
 </div>
-
 
 <script>
 
@@ -204,6 +191,48 @@ $(document).ready(function() {
 			
 		}				
 	});
+	
+	// 글 삭제(더보기(...) 버튼 클릭) => 모달 띄우기
+	$('.more-btn').on('click', function(e){
+		e.preventDefault();  // a태그 위로 올라감 방지
+		
+		let postId = $(this).data('post-id');
+
+		// 한개인 모달 태그에(재활용) data-post-id를 심어줌
+		$('#eModal').data('post-id', postId);  // 세팅
+		
+	});
+	
+	// 모달 안에 있는 삭제하기 클릭 => 진짜 삭제
+	$('#eModal #deletePostBtn').on('click', function(e) {
+		e.preventDefault();
+		
+		let postId = $('#eModal').data('post-id');
+		
+		$.ajax({
+			
+			type: "delete"
+			, url: "/post/delete"
+			, data : {"postId": postId}
+		
+			, success:function(data) {
+				if(data.code == 1) {
+					alert("게시물이 삭제되었습니다.");
+					location.href="/timeline/timeline_view";
+					document.location.reload(true);
+				} else {
+					alert(data.errorMessage);
+				}
+			}
+			
+			, error:function(request, status, error) {
+				alert("게시물 삭제에 실패하였습니다. 관리자에게 문의하세요.")
+			}
+			
+		})
+		
+	});
+	
 	
 	$('.comment-user-click').on('click', function(e) {
 		e.preventDefault();

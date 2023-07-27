@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <div class="d-flex justify-content-center">
 	<div class="d-flex justify-content-center mt-5">
 		<div class="pb-2">
@@ -15,15 +16,15 @@
 				<c:choose>
 					<c:when test="${not empty profile.profileImagePath}">
 						<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
-						<div><button class="image-change-open-btn btn btn-info mt-2">프로필 이미지 변경</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 변경 취소</button></div>
+						<div><button class="image-change-open-btn btn btn-info mt-2">프로필 이미지 변경</button><button class="image-change-close-btn btn btn-secondary mt-2 d-none">프로필 이미지 변경 취소</button></div>
 						<div><button class="btn btn-warning btn-sm mt-2" id="imageDeleteBtn">프로필 이미지 삭제</button></div></center>
 					</c:when>
 					<c:otherwise>
 						<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
-						<button class="image-change-open-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 hidden">프로필 이미지 올리기 취소</button></center>
+						<button class="image-change-open-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 d-none">프로필 이미지 올리기 취소</button></center>
 					</c:otherwise>
 				</c:choose>
-				<div class="d-flex justify-content-between mt-3 border py-3 hidden" id="imageChangeBox">
+				<div class="d-flex justify-content-between mt-3 py-3 border d-none" id="imageChangeBox">
 					<div class="mt-1 ml-4"><span id="fileName">첨부파일 없음</span></div>
 					<div class="d-flex">
 						<div><a href="#" id="fileUploadBtn" class="pr-4"><img width="25px" src="https://cdn4.iconfinder.com/data/icons/camera-20/1314/camera_upload-64.png"></a></div>
@@ -47,19 +48,19 @@
 					<th></th>
 					<td><button id="passwordChangeOpenBtn" class="btn btn-primary btn-sm">비밀번호 변경</button></td>
 				</tr>			
-				<tr class="password-change hidden">
+				<tr class="password-change d-none">
 					<th class="text-center pt-4">기존 비밀번호</th>
 					<td><input type="password" id="originalPassword" class="form-control col-10 ml-2" name="password" placeholder="비밀번호 입력"></td>
 				</tr>
-				<tr class="password-change hidden">
+				<tr class="password-change d-none">
 					<th class="text-center pt-4">* 새 비밀번호</th>
 					<td><input type="password" id="newPassword" class="form-control col-10 ml-2" placeholder="수정할 비밀번호 입력"></td>
 				</tr>
-				<tr class="password-change hidden">
+				<tr class="password-change d-none">
 					<th class="text-center pt-4">* 새 비밀번호 확인</th>
 					<td><input type="password" id="newPasswordCheck" class="form-control col-10 ml-2" placeholder="수정할 비밀번호 확인"></td>
 				</tr>
-				<tr class="password-change hidden">
+				<tr class="password-change d-none">
 					<th></th>
 					<td><button id="passwordChangeBtn" class="btn btn-dark btn-sm float-right mr-5">변경</button></td>
 				</tr>
@@ -105,24 +106,24 @@
 $(document).ready(function(){
 	
 	$('.image-change-open-btn').on('click', function() {
-		if($('.image-change-close-btn').hasClass('hidden')) {
-			$('#imageChangeBox').removeClass('hidden');
-			$('.image-change-open-btn').addClass('hidden');
-			$('.image-change-close-btn').removeClass('hidden');
+		if($('.image-change-close-btn').hasClass('d-none')) {
+			$('#imageChangeBox').removeClass('d-none');
+			$('.image-change-open-btn').addClass('d-none');
+			$('.image-change-close-btn').removeClass('d-none');
 		} else {
-			$('#imageChangeBox').addClass('hidden');
+			$('#imageChangeBox').addClass('d-none');
 		}
 	})
 	
 	$('.image-change-close-btn').on('click', function() {
 		$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
 		$('#fileName').text('첨부파일 없음');
-		if($('.image-change-open-btn').hasClass('hidden')) {
-			$('#imageChangeBox').addClass('hidden');
-			$('.image-change-open-btn').removeClass('hidden');
-			$('.image-change-close-btn').addClass('hidden');
+		if($('.image-change-open-btn').hasClass('d-none')) {
+			$('#imageChangeBox').addClass('d-none');
+			$('.image-change-open-btn').removeClass('d-none');
+			$('.image-change-close-btn').addClass('d-none');
 		} else {
-			$('#imageChangeBox').removeClass('hidden');
+			$('#imageChangeBox').removeClass('d-none');
 		}
 	})
 	
@@ -239,7 +240,7 @@ $(document).ready(function(){
 		if($('#passwordChangeOpenBtn').text() == "비밀번호 변경 취소") {
 			$('#passwordChangeOpenBtn').removeClass("btn-secondary");
 			$('#passwordChangeOpenBtn').addClass("btn-primary");	
-			$('.password-change').addClass('hidden');
+			$('.password-change').addClass('d-none');
 			$('#passwordChangeOpenBtn').text("비밀번호 변경");
 			$('#originalPassword').val('');
 			$('#newPassword').val('');
@@ -247,7 +248,7 @@ $(document).ready(function(){
 		} else {
 			$('#passwordChangeOpenBtn').removeClass("btn-primary");
 			$('#passwordChangeOpenBtn').addClass("btn-secondary");	
-			$('.password-change').removeClass('hidden');
+			$('.password-change').removeClass('d-none');
 			$('#passwordChangeOpenBtn').text("비밀번호 변경 취소");
 		}		
 	});
