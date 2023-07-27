@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sns.timeline.bo.TimelineBO;
 import com.sns.timeline.domain.CardView;
+import com.sns.user.entity.UserEntity;
 
 @RequestMapping("/timeline")
 @Controller
@@ -42,10 +43,15 @@ public class TimelineController {
 //		model.addAttribute("commentList", commentList);
 		// model.addAttribute("userList", userList);
 		
+		List<UserEntity> recommendedUsers = timelineBO.getRecommendedUserList();
+		if (recommendedUsers.size() >= 5) {
+			model.addAttribute("recommendedUsers", recommendedUsers);			
+		} else {
+			model.addAttribute("recommendedUsers", null);
+		}
+		
 		Integer userId = (Integer)session.getAttribute("userId");
-		
 		List<CardView> cardList = timelineBO.generateCardViewList(userId);
-		
 		model.addAttribute("cardList", cardList);
 		
 		model.addAttribute("view", "timeline/timeline");

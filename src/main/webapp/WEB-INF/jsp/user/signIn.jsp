@@ -16,8 +16,8 @@
 					<input id="password" type="password" class="form-control" name="password" placeholder="비밀번호">
 				</div>
 					
-				<input class="btn btn-primary d-block w-100" type="submit" value="로그인"> 
-				<a href="/user/sign_up_view" class="btn btn-secondary d-block w-100 mt-3">회원가입</a>
+				<input class="btn btn-info d-block w-100" type="submit" value="로그인"> 
+				<a href="/user/sign_up_view" class="btn btn-secondary d-block w-100 mt-2">회원가입</a>
 			</form>
 		</div>
 	</div>

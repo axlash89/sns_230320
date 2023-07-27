@@ -3,8 +3,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<div class="d-flex justify-content-center mt-5">
-	<div class="w-75 border">
+
+<div class="d-flex justify-content-center mt-2">
+
+	<div class="w-75">
+	<c:if test="${recommendedUsers ne null}">
+		<!-- 유저 추천 -->
+		<div>
+		<div>유저 추천</div>
+		<div class="d-flex justify-content-around">
+		<c:forEach items="${recommendedUsers}" var="recommendedUser">
+			<%-- <img src="${recommendedUser.profileImagePath}" width="5px" alt="프로필 이미지" class="profile-image-ratio"> --%>
+			${recommendedUser.loginId}
+		</c:forEach>
+		</div>
+		</div>
+	</c:if>	
+		<div class="border">	
 		<textarea id="writeTextArea" placeholder="내용을 입력하세요" rows="3" class="w-100"></textarea>
 		<div class="d-flex justify-content-between pb-2">
 			<div class="file-upload d-flex ml-3">				
@@ -15,7 +30,8 @@
 				<%-- 업로드 된 임시 파일 이름 저장되는 곳 --%>
 				<div class="ml-2 d-flex align-items-center" id="fileName"></div>				
 			</div>
-			<button type="button" id="writeBtn" class="btn btn-info mr-3">올리기</button>
+			<button type="button" id="writeBtn" class="btn btn-info mr-2">올리기</button>
+		</div>
 		</div>
 	</div>
 </div>
@@ -25,7 +41,7 @@
 	<div class="timeline-box w-75">
 		<c:forEach items="${cardList}" var="card">
 			<div class="card">
-				<div class="card-top border d-flex justify-content-between align-items-center py-2">
+				<div class="card-top border d-flex justify-content-between align-items-center py-2 stop-drag">
 				
 				<c:choose>
 				<c:when test="${not empty userId}">
@@ -57,7 +73,7 @@
 				<div class="card-img">
 					<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
-				<div class="card-like mt-2">
+				<div class="card-like mt-1 stop-drag d-flex align-items-center">
 					<%-- 인덱스가 유니크 아이디인 것 알기 --%>
 					<c:choose>
 						<c:when test="${card.filledLike}">
@@ -67,32 +83,32 @@
 						<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://cdn1.iconfinder.com/data/icons/cyber-monday-82/32/like_heart_love_button_follow-256.png" width="25px" class="ml-3" alt="빈 하트"></a>
 						</c:otherwise>
 					</c:choose>					
-					<span class="font-weight-bold">좋아요 ${card.likeCount}개</span>
+					<span class="font-weight-bold ml-1">좋아요 ${card.likeCount}개</span>
 				</div>
 				<div class="card-post mt-2 px-3">
 					<c:choose>
 					<c:when test="${not empty userId}">
-					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none card-user-click stop-drag" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
 					</c:when>
 					<c:otherwise>
-					<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click stop-drag" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
 					</c:otherwise>					
 					</c:choose>
 					<span class="post-content-font">${card.post.content}</span>
 					
 					<fmt:parseDate value="${card.post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
 					<div>
-						<span class="text-secondary float-right mt-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
+						<span class="text-secondary float-right mt-1 stop-drag"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
 					</div>
 				</div>
 					
-				<div class="card-comment-desc font-weight-bold border w-100 pl-3 py-2 mt-3 mb-1">
+				<div class="card-comment-desc font-weight-bold border w-100 pl-3 py-2 mt-3 mb-1 stop-drag">
 				댓글
 				</div>
 				<div class="card-comment-list px-2">
 					<c:forEach items="${card.commentList}" var="commentView">						
 							<div class="card-comment my-1 d-flex align-items-center">
-								<div class="comment-id-box">
+								<div class="comment-id-box stop-drag">
 								<c:choose>
 								<c:when test="${not empty userId}">
 									<a href="/user/other_profile_view?userId=${commentView.user.id}" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
@@ -130,7 +146,7 @@
 								</div>
 								<div class="comment-date-box text-right">
 									<fmt:parseDate value="${commentView.comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
-									<span class="comment-date text-secondary pt-1 float-right mr-1"><fmt:formatDate value="${parsedCreatedAt}" pattern="yy.MM.dd HH:mm"/></span>
+									<span class="comment-date text-secondary pt-1 float-right mr-1 stop-drag"><fmt:formatDate value="${parsedCreatedAt}" pattern="yy.MM.dd HH:mm"/></span>
 								</div>
 							</div>	
 					</c:forEach>
@@ -139,16 +155,17 @@
 				<div class="comment-write m-1 d-flex justify-content-between">
 					<input type="text" placeholder="댓글 내용을 입력하세요" class="comment-input form-control w-100 mb-1">
 					<!-- <input type="text" class="postIdValue d-none" value="${post.id}"> -->
-					<button type="button" class="comment-btn btn btn-secondary btn-sm" data-post-id="${card.post.id}">올리기</button>
+					<button type="button" class="comment-btn btn btn-secondary" data-post-id="${card.post.id}">올리기</button>
 				</div>
 				<div class="card-bottom"></div>
 			</div>
 		</c:forEach>	
 	</div>
 </div>
+<div class="mb-5"></div>
 
 <!-- Modal -->
-<div class="modal fade" id="eModal">
+<div class="modal fade" id="eModal" class="w-50">
 	<%-- modal-sm : 작은 모달 --%>
 	<%-- modal-dialog-centered : 모달창을 수직기준 가운데 위치 --%>
 	<div class="modal-dialog modal-sm modal-dialog-centered">

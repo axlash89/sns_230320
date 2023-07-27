@@ -3,11 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="d-flex justify-content-between align-items-center">
-
-	<a href="/timeline/timeline_view" class="logo-text stop-drag"><div
-			class="h2 font-weight-bold pl-5 mt-4 pt-2">Photogram</div></a>
-					
-	<div class="d-flex align-items-center pt-3">
+	<a href="/timeline/timeline_view" class="logo-text stop-drag">
+	<div class="h2 font-weight-bold pl-5">Photogram</div></a>					
+	<div class="d-flex align-items-center pt-2">
 		<c:choose>
 			<c:when test="${not empty userName}">
 				<div class="mr-3">
@@ -31,7 +29,7 @@
 					<div class="text-center"></div>
 					<a href="/user/profile_view" id="userNameInHead"><div class="mt-2 text-center font-weight-bold stop-drag">
 						${userName}</div></a>
-					<div class="mt-1 text-center">
+					<div>
 						<a href="/user/sign_out" id="logoutText" class="stop-drag">로그아웃</a>
 					</div>
 
@@ -46,3 +44,4 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
+</div>

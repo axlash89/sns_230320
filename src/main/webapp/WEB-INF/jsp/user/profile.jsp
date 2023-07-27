@@ -13,32 +13,64 @@
 				<input type="file" id="file" accept=".jpg, .jpeg, .png, .gif" class="d-none">
 			</div>		
 			
+			<c:choose>
+				<c:when test="${not empty profile.profileImagePath}">
+					<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
+				</c:when>
+				<c:otherwise>
+					<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
+				</c:otherwise>
+			</c:choose>
+			
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-info mt-3" data-toggle="modal" data-target="#staticBackdrop">
 				<c:choose>
-					<c:when test="${not empty profile.profileImagePath}">
-						<center><div><img src="${profile.profileImagePath}" alt="프로필 사진" width="333px" class="rounded-image"></div>
-						<div><button class="image-change-open-btn btn btn-info mt-2">프로필 이미지 변경</button><button class="image-change-close-btn btn btn-secondary mt-2 d-none">프로필 이미지 변경 취소</button></div>
-						<div><button class="btn btn-warning btn-sm mt-2" id="imageDeleteBtn">프로필 이미지 삭제</button></div></center>
+					<c:when test="${not empty profile.profileImagePath}">			
+						프로필 이미지 변경
 					</c:when>
 					<c:otherwise>
-						<center><div class="text-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="프로필 사진" width="150px" class="rounded-image"></div>
-						<button class="image-change-open-btn btn btn-info btn-sm mt-2">프로필 이미지 올리기</button><button class="image-change-close-btn btn btn-secondary btn-sm mt-2 d-none">프로필 이미지 올리기 취소</button></center>
+						프로필 이미지 올리기
 					</c:otherwise>
 				</c:choose>
-				<div class="d-flex justify-content-between mt-3 py-3 border d-none" id="imageChangeBox">
-					<div class="mt-1 ml-4"><span id="fileName">첨부파일 없음</span></div>
-					<div class="d-flex">
-						<div><a href="#" id="fileUploadBtn" class="pr-4"><img width="25px" src="https://cdn4.iconfinder.com/data/icons/camera-20/1314/camera_upload-64.png"></a></div>
-						<c:choose>
-							<c:when test="${not empty profile.profileImagePath}">
-								<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">변경</button></div>
-							</c:when>
-							<c:otherwise>
-								<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">올리기</button></div>
-							</c:otherwise>
-						</c:choose>	
-					</div>
-				</div>
+			</button>
 			
+			<c:if test="${not empty profile.profileImagePath}">
+			<center><div><button class="btn btn-warning btn-sm mt-2" id="imageDeleteBtn">프로필 이미지 삭제</button></div></center>
+			</c:if>
+			
+			<!-- Modal -->
+			<div class="modal fade image-modal" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="staticBackdropLabel">프로필 이미지 업로드</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			       		<div class="d-flex justify-content-between mt-3 py-3 border d-none w-100" id="imageChangeBox">
+							<div class="mt-2 ml-4"><span id="fileName">첨부파일 없음</span></div>
+							<div class="d-flex">
+								<div><a href="#" id="fileUploadBtn" class="pr-4"><img width="25px" src="https://cdn4.iconfinder.com/data/icons/camera-20/1314/camera_upload-64.png" class="mt-2"></a></div>
+								<c:choose>
+									<c:when test="${not empty profile.profileImagePath}">
+										<div class="mr-3"><button class="image-change-btn btn btn-success">변경</button></div>
+									</c:when>
+									<c:otherwise>
+										<div class="mr-3"><button class="image-change-btn btn btn-success btn-sm">올리기</button></div>
+									</c:otherwise>
+								</c:choose>	
+							</div>
+						</div>
+			      </div>
+			      <div class="modal-footer d-flex justify-content-center">
+			        <button type="button" class="btn btn-secondary" id="imgModalCancelBtn" data-dismiss="modal">취소</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+						
 			<table class="table table-border mt-4 stop-drag">
 				<tr>
 					<th class="text-center">아이디</th>
@@ -82,51 +114,57 @@
 	</div>
 </div>
 
-<div class="d-flex justify-content-around mt-2 stop-drag">
+<!-- 
+<div class="text-center h3 stop-drag font-weight-bold mt-5">내 게시물</div>
+
+<div class="d-flex justify-content-center">
+	<div class="timeline-box w-50">
+		<c:forEach items="${postList}" var="post">
+			<div class="card-in-profile border">				
+				<div class="card-img">
+					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+				</div>
+				<div class="card-post mt-2 px-3">
+					<span class="post-content-font">${post.content}</span>
+					
+					<fmt:parseDate value="${post.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreatedAt"/>
+					<div>
+						<span class="text-secondary float-right mt-1 stop-drag small"><fmt:formatDate value="${parsedCreatedAt}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
+					</div>
+				</div>				
+				<div class="card-bottom"></div>
+			</div>
+		</c:forEach>	
+	</div>
+</div>
+ -->
+
+
+<div class="d-flex justify-content-around mt-2 stop-drag mb-5">
 	<div>
 		<div class="text-center h4 font-weight-bold pb-2">팔로워</div>
 		<c:forEach items="${finalFollowerList}" var="follower">
-			<div class="text-center text-primary h4">
-				<a href="/user/other_profile_view?userId=${follower.id}">${follower.loginId}</a>
+			<div class="text-center text-primary h5 a-tag-deco-none">
+				<a href="/user/other_profile_view?userId=${follower.id}" class="a-tag-deco-none">${follower.loginId}</a>
 			</div>		
 		</c:forEach>
 	</div>
 	<div>
 		<div class="text-center h4 font-weight-bold pb-2">팔로잉</div>
 		<c:forEach items="${finalFollowingList}" var="following">
-			<div class="text-center text-primary h4">
-				<a href="/user/other_profile_view?userId=${following.id}">${following.loginId}</a>
+			<div class="text-center text-primary h5">
+				<a href="/user/other_profile_view?userId=${following.id}" class="a-tag-deco-none">${following.loginId}</a>
 			</div>	
 		</c:forEach>
 	</div>
 </div>
 
+
+
 <script>
 
 $(document).ready(function(){
-	
-	$('.image-change-open-btn').on('click', function() {
-		if($('.image-change-close-btn').hasClass('d-none')) {
-			$('#imageChangeBox').removeClass('d-none');
-			$('.image-change-open-btn').addClass('d-none');
-			$('.image-change-close-btn').removeClass('d-none');
-		} else {
-			$('#imageChangeBox').addClass('d-none');
-		}
-	})
-	
-	$('.image-change-close-btn').on('click', function() {
-		$('#file').val("");  // 파일 태그에 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
-		$('#fileName').text('첨부파일 없음');
-		if($('.image-change-open-btn').hasClass('d-none')) {
-			$('#imageChangeBox').addClass('d-none');
-			$('.image-change-open-btn').removeClass('d-none');
-			$('.image-change-close-btn').addClass('d-none');
-		} else {
-			$('#imageChangeBox').removeClass('d-none');
-		}
-	})
-	
+		
 	$('#fileUploadBtn').on('click', function(e) {
 		e.preventDefault();
 		$('#file').click();

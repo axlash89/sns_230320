@@ -12,6 +12,7 @@ import com.sns.common.FileManagerService;
 import com.sns.common.UserEntityComparator;
 import com.sns.follow.bo.FollowBO;
 import com.sns.follow.domain.Follow;
+import com.sns.post.bo.PostBO;
 import com.sns.user.dao.UserRepository;
 import com.sns.user.entity.UserEntity;
 
@@ -21,6 +22,9 @@ public class UserBO {
 	@Autowired
 	private FollowBO followBO;
 	
+	@Autowired
+	private PostBO postBO;
+		
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -36,8 +40,28 @@ public class UserBO {
 		return userRepository.findById(userId).orElse(null);
 	}
 	
-	public List<UserEntity> getUserList() {
-		return userRepository.findAllByOrderById();
+	public List<UserEntity> getRecommendedUserList() {
+		List<UserEntity> userList = userRepository.findAllByOrderById();
+		List<UserEntity> recommendedList = new ArrayList<>();
+		List<Integer> indexList = new ArrayList<>();
+		
+		if (userList.size() < 5) {
+			return userList;
+		}
+		
+		for (int i = 0; i < 5; i++) {
+			int idx = (int)(Math.random()*userList.size());
+			if (indexList.contains(idx) == false) {
+				indexList.add(idx);
+				recommendedList.add(userList.get(idx));
+			} else {
+				i--;
+				continue;
+			}
+		}
+		
+		return recommendedList;
+	
 	}
 	
 	
@@ -164,5 +188,10 @@ public class UserBO {
 		}
 		
 	}
+	
+//	public List<PostEntity> getPostListByUserId(int userId) {
+//		List<PostEntity> postList = postBO.getPostListByUserId(userId);		
+//		return postList;
+//	}
 	
 }

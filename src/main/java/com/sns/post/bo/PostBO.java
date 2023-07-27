@@ -60,7 +60,7 @@ public class PostBO {
 		//post, comment, like
 		commentMapper.deleteCommentByPostId(postId);
 		likeMapper.deleteLikeByPostId(postId);
-				
+		
 		Optional<PostEntity> postOptional = postRepository.findById(postId);
 		if (postOptional.isEmpty()) {
 			logger.error("###[글 삭제] 삭제할 글 불러오기 에러. postId:{}", postId);
@@ -72,7 +72,7 @@ public class PostBO {
 		
 	}
 	
-//	public List<PostEntity> getMyPostList(int userId) {
+//	public List<PostEntity> getPostListByUserId(int userId) {
 //		return postRepository.findAllByUserIdOrderByIdDesc(userId);
 //	}
 

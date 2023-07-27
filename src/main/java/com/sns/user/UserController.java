@@ -1,7 +1,5 @@
 package com.sns.user;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,11 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sns.comment.bo.CommentBO;
-import com.sns.common.UserEntityComparator;
-import com.sns.follow.bo.FollowBO;
-import com.sns.follow.domain.Follow;
-import com.sns.post.bo.PostBO;
+import com.sns.post.entity.PostEntity;
+import com.sns.timeline.domain.CardView;
 import com.sns.user.bo.UserBO;
 import com.sns.user.entity.UserEntity;
 
@@ -27,15 +22,6 @@ public class UserController {
 	
 	@Autowired
 	private UserBO userBO;
-	
-	@Autowired
-	private PostBO postBO;
-	
-	@Autowired
-	private CommentBO commentBO;
-	
-	@Autowired
-	private FollowBO followBO;
 	
 	/**
 	 * 로그인 화면
@@ -86,10 +72,13 @@ public class UserController {
 			return "redirect:/user/sign_in_view";
 		}
 		
+		int userId = (int)session.getAttribute("userId");
+		
 		UserEntity userEntity = userBO.getUserEntityByLoginId(userLoginId);		
 		model.addAttribute("profile", userEntity);
 		
-		int userId = (int)session.getAttribute("userId");		
+		// List<PostEntity> postEntityList = userBO.getPostListByUserId(userId);
+		// model.addAttribute("postList", postEntityList);
 		
 		List<UserEntity> finalFollowerList = userBO.getFollowerList(userId);		
 		model.addAttribute("finalFollowerList", finalFollowerList);

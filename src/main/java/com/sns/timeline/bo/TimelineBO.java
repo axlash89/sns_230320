@@ -85,5 +85,8 @@ public class TimelineBO {
 		return cardViewList;
 	}
 	
+	public List<UserEntity> getRecommendedUserList() {
+		return userBO.getRecommendedUserList();	
+	}
 	
 }

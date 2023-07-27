@@ -45,13 +45,16 @@ header {
 }
 
 .comment-btn {
-	height: 33px;
+	height: 36px;
+	width: 80px;
+	font-size: 15px;
 }
 
 .logo-text, .logo-text:hover {
 	text-decoration: none;
 	color:#045FB4;
 	font-style: italic;
+	padding-top: 17px;
 }
 
 .profile-image-circle {
@@ -115,6 +118,13 @@ header {
 
 .card {
 	margin-top: 50px;
+	border-color: #E6E6E6;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.card-in-profile {
+	margin-top: 20px;
 	border-color: #E6E6E6;
 	border-radius: 12px;
 	overflow: hidden;
@@ -187,4 +197,12 @@ header {
 	width: 100px;
 	padding-left: 7px;
 	padding-right: 0px;
+}
+
+#imgModalCancelBtn {
+	width: 70px;
+}
+
+.image-modal .modal-content {
+	margin-top: 300px;
 }
