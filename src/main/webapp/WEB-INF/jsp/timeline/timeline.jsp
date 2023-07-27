@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <div class="d-flex justify-content-center mt-5">
 	<div class="w-75 border">
 		<textarea id="writeTextArea" placeholder="내용을 입력하세요" rows="3" class="w-100"></textarea>
@@ -18,6 +19,8 @@
 		</div>
 	</div>
 </div>
+
+
 <div class="d-flex justify-content-center">
 	<div class="timeline-box w-75">
 		<c:forEach items="${cardList}" var="card">
@@ -46,8 +49,10 @@
 					</c:choose>	
 				</c:otherwise>	
 				</c:choose>
-				
+					<%-- 내가 쓴 글일 때만 노출 --%>
+					<c:if test="${userId eq card.user.id}">
 					<a href="#" class="more-btn"><div class="mr-3"><img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30px" alt="더보기"></div></a>
+					</c:if>
 				</div>
 				<div class="card-img">
 					<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
@@ -141,6 +146,35 @@
 		</c:forEach>	
 	</div>
 </div>
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 

@@ -16,8 +16,8 @@ public class FileManagerService {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public static final String FILE_UPLOAD_PATH = "C:\\Users\\axlas\\Desktop\\kotaeyoung\\6_spring_project\\new_sns\\workspace\\images/";
-//	public static final String FILE_UPLOAD_PATH = "D:\\kotaeyoung\\6_spring_project\\sns\\workspace\\images/";
+//	public static final String FILE_UPLOAD_PATH = "C:\\Users\\axlas\\Desktop\\kotaeyoung\\6_spring_project\\new_sns\\workspace\\images/";
+	public static final String FILE_UPLOAD_PATH = "D:\\kotaeyoung\\6_spring_project\\sns\\workspace\\images/";
 	
 	
 	
