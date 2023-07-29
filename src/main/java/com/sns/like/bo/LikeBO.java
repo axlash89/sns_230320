@@ -1,5 +1,6 @@
 package com.sns.like.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.sns.like.dao.LikeMapper;
 import com.sns.like.domain.Like;
+import com.sns.like.domain.LikeView;
+import com.sns.user.bo.UserBO;
+import com.sns.user.entity.UserEntity;
 
 @Service
 public class LikeBO {
 
 	@Autowired
 	private LikeMapper likeMapper;
+	
+	@Autowired
+	private UserBO userBO;
 	
 	public int likeToggle(int postId, int userId) {
 		
@@ -51,6 +58,25 @@ public class LikeBO {
 		
 //		return likeMapper.selectLikeCountByPostIdUserId(postId, userId) > 0;
 				
+	}
+	
+	
+	public List<LikeView> generateLikeViewList(int postId) {
+		
+		List<Like> likeList = likeMapper.selectLikeListByPostId(postId);
+		
+		List<LikeView> likeViewList = new ArrayList<>();
+		
+		for (int i = 0; i < likeList.size(); i++) {
+			LikeView like = new LikeView();
+			UserEntity user = userBO.getUserEntityById(likeList.get(i).getUserId());
+			like.setLike(likeList.get(i));
+			like.setUser(user);
+			likeViewList.add(like);
+		}
+		
+		return likeViewList;
+		
 	}
 	
 }

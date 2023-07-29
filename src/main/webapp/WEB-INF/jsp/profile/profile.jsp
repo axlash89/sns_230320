@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div class="d-flex justify-content-center">
 	<div class="d-flex justify-content-center mt-5">
@@ -114,31 +115,59 @@
 	</div>
 </div>
 
-<div class="d-flex justify-content-around mt-2 stop-drag mb-5">
-	<div>
-		<div class="text-center h4 font-weight-bold pb-2">팔로워</div>
+<div class="d-flex justify-content-around mt-2 stop-drag mb-5 border-top border-bottom">
+	<div class="py-5">
+		<div class="text-center h4 font-weight-bold pb-2">팔로워 (${fn:length(finalFollowerList)}명)</div>
+		<c:if test="${empty finalFollowerList}">
+				<div class="text-center">팔로워 없음</div>
+		</c:if>
 		<c:forEach items="${finalFollowerList}" var="follower">
-			<div class="text-center text-primary h5 a-tag-deco-none">
-				<a href="/profile/other_profile_view?userId=${follower.id}" class="a-tag-deco-none">${follower.loginId}</a>
-			</div>		
+			<div class="text-center text-primary h5">
+				<a href="/profile/other_profile_view?userId=${follower.id}" class="a-tag-deco-none">
+				<c:choose>
+					<c:when test="${not empty follower.profileImagePath}">
+						<img src="${follower.profileImagePath}" width="50px" alt="프로필 이미지" class="card-profile-image-circle">
+					</c:when>
+					<c:otherwise>
+						<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" width="50px" alt="프로필 이미지" class="card-profile-image-circle">
+					</c:otherwise>
+				</c:choose>
+				${follower.loginId}
+				</a>
+			</div>				
 		</c:forEach>
 	</div>
-	<div>
-		<div class="text-center h4 font-weight-bold pb-2">팔로잉</div>
+	<div class="py-5">
+		<div class="text-center h4 font-weight-bold pb-2">팔로잉 (${fn:length(finalFollowingList)}명)</div>
+		<c:if test="${empty finalFollowingList}">
+			<div class="text-center">팔로잉 없음</div>
+		</c:if>
 		<c:forEach items="${finalFollowingList}" var="following">
 			<div class="text-center text-primary h5">
-				<a href="/profile/other_profile_view?userId=${following.id}" class="a-tag-deco-none">${following.loginId}</a>
-			</div>	
+				<a href="/profile/other_profile_view?userId=${following.id}" class="a-tag-deco-none">
+				<c:choose>
+					<c:when test="${not empty following.profileImagePath}">
+						<img src="${following.profileImagePath}" width="50px" alt="프로필 이미지" class="card-profile-image-circle">
+					</c:when>
+					<c:otherwise>
+						<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" width="50px" alt="프로필 이미지" class="card-profile-image-circle">
+					</c:otherwise>
+				</c:choose>
+				${following.loginId}
+				</a>
+			</div>				
 		</c:forEach>
 	</div>
 </div>
 
 <c:choose>
 	<c:when test="${empty cardList}">
-		<div class="text-center h5 stop-drag mt-4">내가 올린 게시물이 아직 없네요.</div>
+		<div class="text-center h5 stop-drag mt-4">내가 올린 게시물이 아직 없어요.</div>
 		<div class="text-center h5 stop-drag mt-2 mb-5">회원님들에게 당신의 멋진 사진들을 공유해주세요.</div>
 	</c:when>
 	<c:otherwise>
+		<div class="mt-5 h3 text-center font-weight-bold">내 게시물이 ${fn:length(cardList)}개 있습니다.</div>
+	
 		<div class="d-flex justify-content-center">
 			<div class="timeline-box w-75">
 				<c:forEach items="${cardList}" var="card" varStatus="status">
@@ -167,7 +196,43 @@
 								<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://cdn1.iconfinder.com/data/icons/cyber-monday-82/32/like_heart_love_button_follow-256.png" width="25px" class="ml-3" alt="빈 하트"></a>
 								</c:otherwise>
 							</c:choose>					
-							<span class="font-weight-bold ml-1">좋아요 ${card.likeCount}개</span>
+							<a href="#" class="like-user-btn a-tag-deco-none-b" data-toggle="modal" data-target="#likeModal${card.post.id}"><span class="font-weight-bold ml-1">좋아요 ${fn:length(card.likeList)}개</span></a>
+					
+							<!-- '좋아요'한 유저 Modal -->
+							<div class="modal fade like-modal" id="likeModal${card.post.id}">
+								<%-- modal-sm : 작은 모달 --%>
+								<%-- modal-dialog-centered : 모달창을 수직기준 가운데 위치 --%>
+								<div class="modal-dialog modal-sm modal-dialog-centered">
+									<div class="modal-content text-center">								
+										<div class="modal-body" style="max-height: calc(50vh - 50px); overflow-x: hidden; overflow-y: auto;">
+								            <div class="pb-2 border-bottom">
+												<c:choose>
+													<c:when test="${fn:length(card.likeList) eq 0}">
+															<span>좋아요가 아직 없어요.</span>
+													</c:when>
+													<c:otherwise>
+										     			<c:forEach items="${card.likeList}" var="likeUser">
+										     				<a href="/profile/other_profile_view?userId=${likeUser.user.id}" class="a-tag-deco-none-b">
+										     					<c:choose>
+																	<c:when test="${not empty likeUser.user.profileImagePath}">																
+																		<div class="ml-3 d-flex justify-content-center pr-3 align-items-center mt-2"><img src="${likeUser.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><c:choose><c:when test="${likeUser.user.loginId eq userLoginId}"><span class="ml-2 text-success">${likeUser.user.loginId}</span></c:when><c:otherwise><span class="ml-2">${likeUser.user.loginId}</span></c:otherwise></c:choose></div>
+																	</c:when>
+																	<c:otherwise>
+																		<div class="ml-3 d-flex justify-content-center pr-3 align-items-center mt-2"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><c:choose><c:when test="${likeUser.user.loginId eq userLoginId}"><span class="ml-2 text-success">${likeUser.user.loginId}</span></c:when><c:otherwise><span class="ml-2">${likeUser.user.loginId}</span></c:otherwise></c:choose></div>
+																	</c:otherwise>
+																</c:choose>	
+										     				</a>
+										     			</c:forEach>
+										     		</c:otherwise>
+												</c:choose>	
+								     		</div>			
+											<div class="pt-2">
+												<a href="#" data-dismiss="modal" class="a-tag-deco-none font-weight-bold">닫기</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="card-post mt-2 px-3">
 							

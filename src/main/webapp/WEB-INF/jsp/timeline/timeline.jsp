@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <div class="d-flex justify-content-center mt-2">
@@ -10,7 +11,7 @@
 	<c:if test="${not empty recommendedUsers}">
 		<!-- 유저 추천 -->
 		<div class="mt-2 mb-3 py-2">
-			<div class="stop-drag font-weight-bold border-bottom text-center">유저 추천</div>
+			<div class="stop-drag font-weight-bold border-bottom text-center">회원 추천</div>
 			<div class="d-flex justify-content-around py-1">
 			<c:forEach items="${recommendedUsers}" var="recommendedUser">
 				<c:choose>
@@ -56,26 +57,26 @@
 				<div class="card-top border d-flex justify-content-between align-items-center py-2 stop-drag">
 				
 				<c:choose>
-				<c:when test="${not empty userId}">
-					<c:choose>
-					<c:when test="${not empty card.user.profileImagePath}">
-						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+					<c:when test="${not empty userId}">
+						<c:choose>
+						<c:when test="${not empty card.user.profileImagePath}">
+							<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						</c:otherwise>
+						</c:choose>	
 					</c:when>
 					<c:otherwise>
-						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
-					</c:otherwise>
-					</c:choose>	
-				</c:when>
-				<c:otherwise>
-					<c:choose>
-					<c:when test="${not empty card.user.profileImagePath}">
-						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
-					</c:when>
-					<c:otherwise>
-						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
-					</c:otherwise>
-					</c:choose>	
-				</c:otherwise>	
+						<c:choose>
+						<c:when test="${not empty card.user.profileImagePath}">
+							<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						</c:otherwise>
+						</c:choose>	
+					</c:otherwise>	
 				</c:choose>
 					<%-- 내가 쓴 글일 때만 노출 --%>
 					<c:if test="${userId eq card.user.id}">
@@ -95,7 +96,43 @@
 						<a href="#" class="like-btn" data-post-id="${card.post.id}"><img src="https://cdn1.iconfinder.com/data/icons/cyber-monday-82/32/like_heart_love_button_follow-256.png" width="25px" class="ml-3" alt="빈 하트"></a>
 						</c:otherwise>
 					</c:choose>					
-					<span class="font-weight-bold ml-1">좋아요 ${card.likeCount}개</span>
+					<a href="#" class="like-user-btn a-tag-deco-none-b" data-toggle="modal" data-target="#likeModal${card.post.id}"><span class="font-weight-bold ml-1">좋아요 ${fn:length(card.likeList)}개</span></a>
+					
+					<!-- '좋아요'한 유저 Modal -->
+					<div class="modal fade like-modal" id="likeModal${card.post.id}">
+						<%-- modal-sm : 작은 모달 --%>
+						<%-- modal-dialog-centered : 모달창을 수직기준 가운데 위치 --%>
+						<div class="modal-dialog modal-sm modal-dialog-centered">
+							<div class="modal-content text-center">								
+								<div class="modal-body" style="max-height: calc(50vh - 50px); overflow-x: hidden; overflow-y: auto;">
+						            <div class="pb-2 border-bottom">
+										<c:choose>
+											<c:when test="${fn:length(card.likeList) eq 0}">
+													<span>좋아요가 아직 없어요.</span>
+											</c:when>
+											<c:otherwise>
+								     			<c:forEach items="${card.likeList}" var="likeUser">
+								     				<a href="/profile/other_profile_view?userId=${likeUser.user.id}" class="a-tag-deco-none-b">
+								     					<c:choose>
+															<c:when test="${not empty likeUser.user.profileImagePath}">																
+																<div class="ml-3 d-flex justify-content-center pr-3 align-items-center mt-2"><img src="${likeUser.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><c:choose><c:when test="${likeUser.user.loginId eq userLoginId}"><span class="ml-2 text-success">${likeUser.user.loginId}</span></c:when><c:otherwise><span class="ml-2">${likeUser.user.loginId}</span></c:otherwise></c:choose></div>
+															</c:when>
+															<c:otherwise>
+																<div class="ml-3 d-flex justify-content-center pr-3 align-items-center mt-2"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><c:choose><c:when test="${likeUser.user.loginId eq userLoginId}"><span class="ml-2 text-success">${likeUser.user.loginId}</span></c:when><c:otherwise><span class="ml-2">${likeUser.user.loginId}</span></c:otherwise></c:choose></div>
+															</c:otherwise>
+														</c:choose>	
+								     				</a>
+								     			</c:forEach>
+								     		</c:otherwise>
+										</c:choose>	
+						     		</div>			
+									<div class="pt-2">
+										<a href="#" data-dismiss="modal" class="a-tag-deco-none font-weight-bold">닫기</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
 				</div>
 				<div class="card-post mt-2 px-3">
 					<c:choose>
@@ -192,9 +229,11 @@
 	</div>
 </div>
 
+
 <script>
 
 $(document).ready(function() {
+	
 	
 	$('.card-user-click').on('click', function(e) {
 		e.preventDefault();

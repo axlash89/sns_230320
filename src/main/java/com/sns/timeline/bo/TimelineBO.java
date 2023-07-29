@@ -3,15 +3,15 @@ package com.sns.timeline.bo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sns.comment.bo.CommentBO;
 import com.sns.comment.domain.CommentView;
+import com.sns.follow.bo.FollowBO;
 import com.sns.like.bo.LikeBO;
 import com.sns.like.domain.Like;
+import com.sns.like.domain.LikeView;
 import com.sns.post.bo.PostBO;
 import com.sns.post.entity.PostEntity;
 import com.sns.timeline.domain.CardView;
@@ -32,6 +32,9 @@ public class TimelineBO {
 	
 	@Autowired
 	private LikeBO likeBO;
+	
+	@Autowired
+	private FollowBO followBO;
 	
 	
 	// input : X
@@ -64,10 +67,10 @@ public class TimelineBO {
 			commentViewList = commentBO.generateCommentViewList(postList.get(i).getId());
 			card.setCommentList(commentViewList);
 			
-			// 좋아요 개수
-			List<Like> LikeList = new ArrayList<>();
-			LikeList = likeBO.getLikeListByPostId(postList.get(i).getId());
-			card.setLikeCount(LikeList.size());	
+			// 좋아요
+			List<LikeView> likeList = new ArrayList<>();
+			likeList = likeBO.generateLikeViewList(postList.get(i).getId());
+			card.setLikeList(likeList);
 			
 			// 좋아요 여부
 			boolean filledLike;
@@ -112,10 +115,10 @@ public class TimelineBO {
 			commentViewList = commentBO.generateCommentViewList(postList.get(i).getId());
 			card.setCommentList(commentViewList);
 			
-			// 좋아요 개수
-			List<Like> LikeList = new ArrayList<>();
-			LikeList = likeBO.getLikeListByPostId(postList.get(i).getId());
-			card.setLikeCount(LikeList.size());	
+			// 좋아요
+			List<LikeView> likeList = new ArrayList<>();
+			likeList = likeBO.generateLikeViewList(postList.get(i).getId());
+			card.setLikeList(likeList);
 			
 			// 좋아요 여부
 			boolean filledLike;
@@ -158,9 +161,9 @@ public class TimelineBO {
 			card.setCommentList(commentViewList);
 			
 			// 좋아요 개수
-			List<Like> LikeList = new ArrayList<>();
-			LikeList = likeBO.getLikeListByPostId(postList.get(i).getId());
-			card.setLikeCount(LikeList.size());	
+			List<LikeView> likeList = new ArrayList<>();
+			likeList = likeBO.generateLikeViewList(postList.get(i).getId());
+			card.setLikeList(likeList);
 			
 			// 좋아요 여부
 			boolean filledLike;
@@ -173,7 +176,6 @@ public class TimelineBO {
 		
 		return cardViewList;
 	}
-	
 
 	public List<UserEntity> getRecommendedUserList(String userLoginId) {
 		return userBO.getRecommendedUserList(userLoginId);	

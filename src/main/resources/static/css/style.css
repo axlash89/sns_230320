@@ -171,6 +171,11 @@ header {
 	color: #045FB4;
 }
 
+.a-tag-deco-none-b, .a-tag-deco-none-b:hover {
+	text-decoration: none;
+	color: black;
+}
+
 .comment-date {
 	font-size: 12px;
 }
@@ -206,3 +211,5 @@ header {
 .image-modal .modal-content {
 	margin-top: 300px;
 }
+
+

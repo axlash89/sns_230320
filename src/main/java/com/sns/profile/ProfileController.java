@@ -84,6 +84,9 @@ public class ProfileController {
 		
 		boolean follow = profileBO.getFollow(currUserId, userId);
 		model.addAttribute("follow", follow);
+		
+		boolean followed = profileBO.getFollow(userId, currUserId);
+		model.addAttribute("followed", followed);
 				
 		List<UserEntity> finalFollowerList = profileBO.getFollowerList(userId);		
 		model.addAttribute("finalFollowerList", finalFollowerList);

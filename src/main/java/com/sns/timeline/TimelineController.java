@@ -49,8 +49,7 @@ public class TimelineController {
 			model.addAttribute("recommendedUsers", recommendedUsers);			
 		} else {
 			model.addAttribute("recommendedUsers", null);
-		}
-		
+		}		
 
 		Integer userId = (Integer)session.getAttribute("userId");
 		List<CardView> cardList = timelineBO.generateCardViewList(userId);

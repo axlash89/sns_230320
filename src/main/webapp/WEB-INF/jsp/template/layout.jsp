@@ -10,6 +10,8 @@
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
+
+
 <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 <!-- static-path-pattern: /static/**  <- 이게 있으므로 /static으로 시작 -->
 </head>
@@ -26,6 +28,7 @@
 		</section>
 		
 	</div>
+
 	
 </body>
 </html>
