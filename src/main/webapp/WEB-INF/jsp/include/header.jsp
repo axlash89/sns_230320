@@ -12,12 +12,12 @@
 					<c:choose>
 						<c:when test="${not empty profileImagePath}">
 							<div class="profile-image-circle">
-								<a href="/user/profile_view"><img src="${profileImagePath}" width="50px" alt="프로필 이미지" class="profile-image-ratio"></a>
+								<a href="/profile/profile_view"><img src="${profileImagePath}" width="50px" alt="프로필 이미지" class="profile-image-ratio"></a>
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="profile-image-circle">
-								<a href="/user/profile_view"><img
+								<a href="/profile/profile_view"><img
 									src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
 									width="50px" alt="프로필 이미지" class="profile-image-ratio"></a>
 							</div>
@@ -27,7 +27,7 @@
 
 				<div class="mr-5">
 					<div class="text-center"></div>
-					<a href="/user/profile_view" id="userNameInHead"><div class="mt-2 text-center font-weight-bold stop-drag">
+					<a href="/profile/profile_view" id="userNameInHead"><div class="mt-2 text-center font-weight-bold stop-drag">
 						${userName}</div></a>
 					<div>
 						<a href="/user/sign_out" id="logoutText" class="stop-drag">로그아웃</a>

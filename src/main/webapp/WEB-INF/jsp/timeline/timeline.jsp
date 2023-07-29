@@ -7,18 +7,30 @@
 <div class="d-flex justify-content-center mt-2">
 
 	<div class="w-75">
-	<c:if test="${recommendedUsers ne null}">
+	<c:if test="${not empty recommendedUsers}">
 		<!-- 유저 추천 -->
-		<div>
-		<div>유저 추천</div>
-		<div class="d-flex justify-content-around">
-		<c:forEach items="${recommendedUsers}" var="recommendedUser">
-			<%-- <img src="${recommendedUser.profileImagePath}" width="5px" alt="프로필 이미지" class="profile-image-ratio"> --%>
-			${recommendedUser.loginId}
-		</c:forEach>
+		<div class="mt-2 mb-3 py-2">
+			<div class="stop-drag font-weight-bold border-bottom text-center">유저 추천</div>
+			<div class="d-flex justify-content-around py-1">
+			<c:forEach items="${recommendedUsers}" var="recommendedUser">
+				<c:choose>
+				<c:when test="${not empty recommendedUser.profileImagePath}">
+				<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${recommendedUser.id}">
+				<img src="${recommendedUser.profileImagePath}" width="5px" alt="프로필 이미지" class="recommended-profile-image">			
+				${recommendedUser.loginId}
+				</a>
+				</c:when>
+				<c:otherwise>
+				<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${recommendedUser.id}">
+				<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" width="5px" alt="프로필 이미지" class="recommended-profile-image">
+				${recommendedUser.loginId}
+				</a>
+				</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			</div>
 		</div>
-		</div>
-	</c:if>	
+	</c:if>
 		<div class="border">	
 		<textarea id="writeTextArea" placeholder="내용을 입력하세요" rows="3" class="w-100"></textarea>
 		<div class="d-flex justify-content-between pb-2">
@@ -47,20 +59,20 @@
 				<c:when test="${not empty userId}">
 					<c:choose>
 					<c:when test="${not empty card.user.profileImagePath}">
-						<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
 					</c:when>
 					<c:otherwise>
-						<a href="/user/other_profile_view?userId=${card.user.id}" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
 					</c:otherwise>
 					</c:choose>	
 				</c:when>
 				<c:otherwise>
 					<c:choose>
 					<c:when test="${not empty card.user.profileImagePath}">
-						<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="${card.user.profileImagePath}" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
 					</c:when>
 					<c:otherwise>
-						<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
+						<a href="#" class="a-tag-deco-none card-user-click" data-card-user-id="${card.user.id}"><div class="ml-3 d-flex align-items-center"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-profile-image-circle" width="35px" alt="프로필 이미지"><span class="ml-2">${card.user.loginId}</span></div></a>
 					</c:otherwise>
 					</c:choose>	
 				</c:otherwise>	
@@ -88,10 +100,10 @@
 				<div class="card-post mt-2 px-3">
 					<c:choose>
 					<c:when test="${not empty userId}">
-					<a href="/user/other_profile_view?userId=${card.post.userId}" class="a-tag-deco-none card-user-click stop-drag" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					<a href="#" class="a-tag-deco-none card-user-click stop-drag" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
 					</c:when>
 					<c:otherwise>
-					<a href="/user/sign_in_view" class="a-tag-deco-none card-user-click stop-drag" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
+					<a href="#" class="a-tag-deco-none card-user-click stop-drag" data-card-user-id="${card.user.id}"><span class="post-userLoginId ml-1 mr-1">${card.user.loginId}</span></a>
 					</c:otherwise>					
 					</c:choose>
 					<span class="post-content-font">${card.post.content}</span>
@@ -111,7 +123,7 @@
 								<div class="comment-id-box stop-drag">
 								<c:choose>
 								<c:when test="${not empty userId}">
-									<a href="/user/other_profile_view?userId=${commentView.user.id}" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
+									<a href="#" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
 									<c:choose>
 									<c:when test="${not empty commentView.user.profileImagePath}">								
 									<img src="${commentView.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
@@ -123,7 +135,7 @@
 									<span class="font-weight-bold mr-1">${commentView.user.loginId}</span></a>
 								</c:when>
 								<c:otherwise>
-									<a href="/user/sign_in_view" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
+									<a href="#" class="a-tag-deco-none comment-user-click" data-comment-user-id="${commentView.user.id}">
 									<c:choose>
 									<c:when test="${not empty commentView.user.profileImagePath}">								
 									<img src="${commentView.user.profileImagePath}" class="comment-profile-image-circle" width="35px" alt="댓글 작성자 이미지">								
@@ -194,8 +206,6 @@ $(document).ready(function() {
 			let result = confirm("회원정보 열람 기능은 로그인이 필요합니다. 로그인 하시겠습니까?");
 			
 			if (!result) {
-				location.href="/timeline/timeline_view";
-				document.location.reload(true);
 				return;
 			} else {
 				location.href="/user/sign_in_view";
@@ -204,7 +214,7 @@ $(document).ready(function() {
 			
 		} else {
 			
-			location.href="/user/other_profile_view?userId=" + cardUserId;
+			location.href="/profile/other_profile_view?userId=" + cardUserId;
 			
 		}				
 	});
@@ -271,7 +281,7 @@ $(document).ready(function() {
 			
 		} else {
 			
-			location.href="/user/other_profile_view?userId=" + commentUserId;
+			location.href="/profile/other_profile_view?userId=" + commentUserId;
 			
 		}				
 	});

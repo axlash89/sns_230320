@@ -27,7 +27,7 @@ header {
 
 #signUpForm {
 	width: 500px;
-	height: 340px;
+	height: 420px;
 	background-color:#EFFBFB;
 	border-color: #E6E6E6;
 	border-radius: 15px;
@@ -80,6 +80,13 @@ header {
     overflow: hidden;
 }
 
+.recommended-profile-image {
+	width: 30px;
+    height:30px; 
+    border-radius: 70%;
+    overflow: hidden;
+}
+
 #logoutText {
 	text-decoration: none;
 	font-size: 12px;
@@ -118,13 +125,6 @@ header {
 
 .card {
 	margin-top: 50px;
-	border-color: #E6E6E6;
-	border-radius: 12px;
-	overflow: hidden;
-}
-
-.card-in-profile {
-	margin-top: 20px;
 	border-color: #E6E6E6;
 	border-radius: 12px;
 	overflow: hidden;

@@ -3,6 +3,7 @@ package com.sns.user.bo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,7 @@ public class UserBO {
 
 	@Autowired
 	private FollowBO followBO;
-	
-	@Autowired
-	private PostBO postBO;
-		
+			
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -40,28 +38,63 @@ public class UserBO {
 		return userRepository.findById(userId).orElse(null);
 	}
 	
-	public List<UserEntity> getRecommendedUserList() {
-		List<UserEntity> userList = userRepository.findAllByOrderById();
-		List<UserEntity> recommendedList = new ArrayList<>();
+	public List<UserEntity> getRecommendedUserList(String userLoginId) {
+		
+		List<UserEntity> userList = userRepository.findAllByOrderById();		
 		List<Integer> indexList = new ArrayList<>();
+		List<UserEntity> recommendedList = new ArrayList<>();
+
+		if (userList.size() < 5) {
+			return userList;
+		}
+		
+		if (userLoginId == null) {
+			
+			for (int i = 0; i < 5; i++) {
+				int idx = (int)(Math.random()*userList.size());
+				if (indexList.contains(idx) == false) {
+					indexList.add(idx);
+					recommendedList.add(userList.get(idx));
+				} else {
+					i--;
+					continue;
+				}
+			}
+			
+			return recommendedList;
+					
+		}
+		
+		UserEntity myself = userRepository.findByLoginId(userLoginId);		
+		List<Follow> followingList = followBO.getFollowingList(myself.getId()); 
+		List<UserEntity> finalFollowingList = new ArrayList<>();
+		
+		for (int i = 0; i < followingList.size(); i++) {
+			UserEntity user = getUserEntityById(followingList.get(i).getFollowId());
+			finalFollowingList.add(user);			
+		}
+		
+		userList.removeAll(finalFollowingList);
+		userList.remove(myself);
 		
 		if (userList.size() < 5) {
 			return userList;
 		}
 		
+				
 		for (int i = 0; i < 5; i++) {
 			int idx = (int)(Math.random()*userList.size());
 			if (indexList.contains(idx) == false) {
 				indexList.add(idx);
 				recommendedList.add(userList.get(idx));
-			} else {
+			} else {		
 				i--;
 				continue;
 			}
 		}
 		
-		return recommendedList;
-	
+		return recommendedList;		
+		
 	}
 	
 	

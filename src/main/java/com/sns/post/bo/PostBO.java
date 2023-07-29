@@ -72,8 +72,8 @@ public class PostBO {
 		
 	}
 	
-//	public List<PostEntity> getPostListByUserId(int userId) {
-//		return postRepository.findAllByUserIdOrderByIdDesc(userId);
-//	}
+	public List<PostEntity> getPostListByUserId(int userId) {
+		return postRepository.findAllByUserIdOrderByIdDesc(userId);
+	}
 
 }

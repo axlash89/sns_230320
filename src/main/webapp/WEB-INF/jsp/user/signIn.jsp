@@ -7,12 +7,12 @@
 		<div>
 			<form method="post" action="/user/sign_in" id="loginForm" class="form-horizontal" role="form">
 				<div style="margin-bottom: 15px" class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
+					<span class="input-group-addon"></span> 
 					<input id="loginId" type="text" class="form-control" name="loginId" placeholder="아이디">
 				</div>
 					
 				<div style="margin-bottom: 22px" class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+					<span class="input-group-addon"></span> 
 					<input id="password" type="password" class="form-control" name="password" placeholder="비밀번호">
 				</div>
 					

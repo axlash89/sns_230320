@@ -85,8 +85,98 @@ public class TimelineBO {
 		return cardViewList;
 	}
 	
-	public List<UserEntity> getRecommendedUserList() {
-		return userBO.getRecommendedUserList();	
+	public List<CardView> generateCardViewListById(int userId) {
+		
+		List<CardView> cardViewList = new ArrayList<>();  // []
+		
+		// 글 목록 가져온다.
+		List<PostEntity> postList = postBO.getPostListByUserId(userId);
+		
+		// 글 목록 반복문 순회
+
+		// postEntity => cardView   =>   cardViewList에 담는다.
+		for (int i = 0; i < postList.size(); i++) {
+			// post에 대응되는 하나의 카드를 만든다.
+			CardView card = new CardView();
+			
+			// 글을 세팅한다.
+			card.setPost(postList.get(i));
+			
+			// 글쓴이를 세팅한다.
+			UserEntity user = userBO.getUserEntityById(postList.get(i).getUserId());
+			card.setUser(user);
+			
+			
+			// 댓글들을 세팅한다.
+			List<CommentView> commentViewList = new ArrayList<>();
+			commentViewList = commentBO.generateCommentViewList(postList.get(i).getId());
+			card.setCommentList(commentViewList);
+			
+			// 좋아요 개수
+			List<Like> LikeList = new ArrayList<>();
+			LikeList = likeBO.getLikeListByPostId(postList.get(i).getId());
+			card.setLikeCount(LikeList.size());	
+			
+			// 좋아요 여부
+			boolean filledLike;
+			filledLike = likeBO.getLikeByPostIdAndUserId(postList.get(i).getId(), userId);
+			card.setFilledLike(filledLike);
+			
+			// ★★★★★★ cardViewList에 담는다.
+			cardViewList.add(card);
+		}		
+		
+		return cardViewList;
+	}
+	
+		
+	public List<CardView> generateOtherCardViewListById(int userId, int currUserId) {
+		
+		List<CardView> cardViewList = new ArrayList<>();  // []
+		
+		// 글 목록 가져온다.
+		List<PostEntity> postList = postBO.getPostListByUserId(userId);
+		
+		// 글 목록 반복문 순회
+
+		// postEntity => cardView   =>   cardViewList에 담는다.
+		for (int i = 0; i < postList.size(); i++) {
+			// post에 대응되는 하나의 카드를 만든다.
+			CardView card = new CardView();
+			
+			// 글을 세팅한다.
+			card.setPost(postList.get(i));
+			
+			// 글쓴이를 세팅한다.
+			UserEntity user = userBO.getUserEntityById(postList.get(i).getUserId());
+			card.setUser(user);
+			
+			
+			// 댓글들을 세팅한다.
+			List<CommentView> commentViewList = new ArrayList<>();
+			commentViewList = commentBO.generateCommentViewList(postList.get(i).getId());
+			card.setCommentList(commentViewList);
+			
+			// 좋아요 개수
+			List<Like> LikeList = new ArrayList<>();
+			LikeList = likeBO.getLikeListByPostId(postList.get(i).getId());
+			card.setLikeCount(LikeList.size());	
+			
+			// 좋아요 여부
+			boolean filledLike;
+			filledLike = likeBO.getLikeByPostIdAndUserId(postList.get(i).getId(), currUserId);
+			card.setFilledLike(filledLike);
+			
+			// ★★★★★★ cardViewList에 담는다.
+			cardViewList.add(card);
+		}		
+		
+		return cardViewList;
+	}
+	
+
+	public List<UserEntity> getRecommendedUserList(String userLoginId) {
+		return userBO.getRecommendedUserList(userLoginId);	
 	}
 	
 }

@@ -43,13 +43,15 @@ public class TimelineController {
 //		model.addAttribute("commentList", commentList);
 		// model.addAttribute("userList", userList);
 		
-		List<UserEntity> recommendedUsers = timelineBO.getRecommendedUserList();
+		String userLoginId = (String) session.getAttribute("userLoginId");		
+		List<UserEntity> recommendedUsers = timelineBO.getRecommendedUserList(userLoginId);
 		if (recommendedUsers.size() >= 5) {
 			model.addAttribute("recommendedUsers", recommendedUsers);			
 		} else {
 			model.addAttribute("recommendedUsers", null);
 		}
 		
+
 		Integer userId = (Integer)session.getAttribute("userId");
 		List<CardView> cardList = timelineBO.generateCardViewList(userId);
 		model.addAttribute("cardList", cardList);
